@@ -1,0 +1,92 @@
+\subsection{Continuous-time Markov Processes}
+
+\subsubsection{Discrete Versus Continuous-time}
+%Theoretical Advantages and Practical Challenges
+By default, all dynamic Bayesian networks, of which traditional Markov models can be viewed as a variant, make discrete-time assumptions. The main distinguishing characteristic with the continuous-time setting is that in the discrete-time case, the Markov process stays in a state $i$ for a time distributed according to $F_{i}(t)$ and in the continuous-time case the holding time is \emph{exponentially} distributed according to $F_{i}(t) = e^{q_{i}t}$ where $q_{i}$ is the intensity of the transitions, or the tendency to change state. 
+
+In contrast to discrete-time BNs, the transitions model an exponential distribution between transition states.  Also, the rows in the matrix $Q$ sum to zero instead of one, with the sum of all transition intensities $q_{i,j}$ in the $i$th row, where $j\neq i$, equal to the absolute value of  $q_{i,i}$ and the probability of observing $j$ immediately after state $i$ is $q_{i,j}/q_{i,i}$.
+
+Discrete time Markov models are characterized by a tuple, $\lambda = (\pi,A)$, where $\pi$ consists of inital state distribution that describes the transition prrobailities for a set of states , and $X$ is a set of states.  In the case of hidden Markov models, the emission matrix, $B$ is also required to indicated the probability distribution of the observations, given A, $f(B|A)$.
+
+The primary distinction between DT and CT Markov models, or CTBN, is that in the continuous time setting, the transition probability matrix, $P$ with entries representing values for $p_{ij}=P(X_t=j|X_{t-1}=i)$, where $p_{ij}\geq 0$ and $\sum_{i}p_{ij}=1$, becomes an transition intenisty matrix, $Q$, with entries that now correspond with
+
+$$p_{ij}= \lim_{\delta t \to +0} \frac{p_{ij}(t,t+\delta t )}{\delta t}$$
+
+Each intensity, or sojourn time in state $i$ has an exponential distribution (unlike a discrete-time model) with a rate give by $q_{i,i}$, the $i$th diagonal element of $Q$, where:
+
+$$\forall q_{i,i} = -\Sigma_i\neq j q_{i,j}(t))$$
+
+
+
+
+
+By default, all dynamic Bayesian networks, of which traditional Markov models can be viewed as a variant, make discrete-time assumptions. The main distinguishing characteristic with the continuous-time setting is that in the discrete-time case, the Markov process stays in a state $i$ for a time distributed according to $F_{i}(t)$ and in the continuous-time case the holding time is \emph{exponentially} distributed according to $F_{i}(t) = e^{q_{i}t}$ where $q_{i}$ is the intensity of the transitions, or the tendency to change state.
+
+For a process variable $X$ with a domain of of ${x_1,x_2,...,x_n}$ where $n$ corresponds with the number of states, the intuition is that the intensity, $q_{i}$, no longer corresponds with the transition probability that is constant for the length of a time slice, but rather an `instantaneous probability' of leaving state $x_i$ and the intensity of $q_{i,j}$ gives the `instantaneous probability' of transitioning from $x_i$ to $x_j$.
+
+A four-state MSM is shown in Figure \ref{fig:msm}, where $i \in \{1,2,3,4\}$, $r$ is the state at time $t$, and $s$ is the occupied state at the next observation.  The states of an MSM are ordered progressively to reflect stages in a disease trajectory.  In our example, all a state transitions are allowed.  In practice, many MSM applications are used for survival analysis, and the final state functions as an \emph{absorbing state} from which no transitions are allowed, representing phenomena such as death or censoring.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,semithick]
+\tikzstyle{every state}=[fill=blue!8,draw=black,thick,text=black,scale=1]
+
+\node[state]         (A)              {$q_{1}$};
+\node[state]         (B) [right of=A] {$q_{2}$};
+\node[state]         (C) [below of=A] {$q_{3}$};
+\node[state]         (D) [below of=B] {$q_{4}$};
+
+\path (A.10) edge  [right] node[right] {} (B.170);
+\path (A.260) edge  [right] node[below] {} (C.100);
+\path (A.320) edge  [right] node[below] {} (D.120);
+\path (B.190) edge  [right] node[left] {} (A.350);
+\path (B.215) edge  [right] node[below] {} (C.55);
+\path (B.260) edge  [right] node[below] {} (D.100);
+\path (C.35) edge  [right] node[above] {} (B.235);
+\path (C.80) edge  [right] node[above] {} (A.280);
+\path (C.10) edge  [right] node[right] {} (D.170);
+\path (D.190) edge  [right] node[left] {} (C.350);
+\path (D.135) edge  [right] node[above] {} (A.305);
+\path (D.80) edge  [right] node[above] {} (B.280);
+\end{tikzpicture}
+\end{center}
+\caption{Four-state CT Markov model}
+\label{fig:msm}
+\end{figure}
+
+The intensity matrix for Figure~\ref{fig:msm}, $Q$, represents the instantaneous behavior of the process $X$, and the associated set of model intensities.
+\begin{figure}[h!]
+\begin{center}
+\[
+Q_X =
+  \begin{bmatrix}
+    q_{1,1} & q_{1,2} & q_{1,3} & q_{1,4}\\
+    q_{2,1} & q_{2,2} & q_{2,3} & q_{2,4}\\
+    q_{3,1} & q_{3,2} & q_{3,3} & q_{3,4}\\
+    q_{4,1} & q_{4,2} & q_{4,3} & q_{4,4}\\
+  \end{bmatrix}
+\]
+\end{center}
+\caption{Intensity Matrix}
+\label{fig:q}
+\end{figure}
+
+
+To illustrate this idea, I begin with a discrete time example.  Suppose a 
+
+\subsubsection{Representation}
+The specific instance of CT-Markov models we use for temporal abstraction are based on multi-state Markov models (MSMs).  Similar to a dynamic Bayesian network, arrows represent the allowable transition between model states, which are quantified by an \emph{instantaneous risk}, or transition intensities.
+
+MSMs can be viewed as a domain specific instance of the larger class, where the semantics of the model structure has an interpretation that is rooted in epidemiology and biostatistics.  The models share the same mathematical foundations rooted in homogenous time stochastic processes, but have evolved separately from the theoretical and applied work in computer science on CT-BNs.
+
+This class of CT-Markov models have been applied for the modeling of numerous chronic diseases including HIV~\cite{Presanis11}, lung disease~\cite{Titman10}, hepatitis~\cite{Sweeting10}, and others for over ten years.  One model is learned from the set of all patient observations and used to describe a population-level disease phenomena.  In addition to the base Markov model, they have hidden and semi-Markovian extensions ~\cite{Jackson2011} and there is various work that aims to improve on model optimization techniques.
+
+
+
+
+\subsubsection{Learning}
+The probabilities of transitioning are a function of time and transition intensity.  When the values are unknown, maximum likelihood estimates for the parameters, priors for the model, can be computed from the probability matrix, $P(t)$ that is evaluated in a time interval $(0,t)$ is based on the Kolmogorov differential equations and explained by the relationship $P(t)= exp(tQ)$ (cite Taylor and Karlin, 1994).  When there are relatively few states, an analytic solution can be found.  
+
+
+\subsubsection{Inference}
+

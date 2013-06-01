@@ -1,0 +1,238 @@
+\subsection{Validation}
+\label{hep_results}
+To validate the results of clustering temporal lab data for the hepatitis data set, we used grading and staging data from liver biopsies a gold standard.  We validate our results using the b-cubed metric and compare performance with results that of previous work using temporal PLT data alone~\cite{Hirano05}, and multivariate temporal data, including PLT-ALB data~\cite{ Hirano07a,Hirano07b} and work publishes in 2012, which extended the approach to PLT, ALB and ChE tests~\cite{Tsumoto12}.  These prior studies used a feature-based technique, ``\emph{trajectory mining}", and provide results that show that compared with conventional studies the method provides a more detailed classification of temporal trends.
+
+I also compare results for alternative clustering algorithms for the semiparametric framework.  Typically, spectral methods are the nonparametric clustering technique of choice.  However, they have some limitations that are discussed in more detail in Chapter~\ref{5_cluster_alg}.  As an alternative, I compare results obtained with spectral clustering with that of Drichlet process Gaussian mixture models, an approach that has its foundation in density estimation and has more recently applied for clustering.  The motivation for applying nonparametric Bayesian for clinical data is described in Chapter\ref{6_extending}.
+
+Lastly, to provide some context for the choice of previous work to focus on only those patients with HVC and no interferon therapy, one needs to be aware of affect on relevant biomarkers.  HVC was considered an nontreatable disease until interferon therapy.  Although beneficial for some patients, there can be serious side effects.  In terms of diabetes indicators, it can cause fluctuations.  Therefore, is can be helpful to distinguish the population of patients with no interferon treatment.
+
+\subsubsection{Comparison of Bayesian and Spectral Methods}
+First, we compare alternative nonparametric methods for the semiparametric clustering of temporal hepatitis data, specifically spectral clustering and Bayesian clustering.  Figure~\ref{allHep} visualizes the validation scores reported in Table~\ref{allHepTable}.
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/allHep.jpeg}}
+\caption{B-cubed value for different nonparametric clustering methods and $k$ values for the hepatitis data set}
+\label{allHep}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+\begin{table}[ht]
+\caption{B-cubed value for spectral (SP-SC) and nonparametric Bayes (SP-B) clustering, all hepatitis patients.}
+\label{allHepTable}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcccr}
+\hline
+\hline
+method	& k	& P	& R	& B-Cubed \\
+\hline
+\hline
+spectral methods & 6	& 0.38& 0.22& 0.28\\
+spectral methods	         & 7	& 0.38& 0.21& 0.27\\
+\textbf{Bayesian clustering}       & \textbf{4}	& \textbf{0.35}& \textbf{0.62}& \textbf{0.45}\\
+Bayesian clustering	     & 5	& 0.35& 0.52& 0.42\\
+Bayesian clustering	     & 6	& 0.36& 0.46& 0.40\\
+\hline
+
+SP-B	     & 7	& 0.36& 0.42& 0.39\\
+\hline
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+
+
+\subsubsection{Platelet Data}
+Using \emph{only} platelet tests, Figure~\ref{plt_only} shows the results of semiparametric Bayesian clustering reported in Table~\ref{pltdatatable}.  The results are compared to techniques developed by Hirano et al.\cite{Hirano05}, and based on b-cubed values that were calculated using the cluster constitutions that were published in their paper, with the authors indicating that small clusters of $n \l 3$ omitted.
+
+\begin{figure}[ht!]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/plt_only.jpeg}}
+\caption{Comparison of clustering methods using temporal PLT data}
+\label{plt_only}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+%Bayesian clustering	hepC_noInf	plt	5	0.491029213	0.411852866	0.447969438
+%Hirano 2007b	hepB	plt	8	0.256698688	0.277312663	0.308345178
+%Hirano 2007b	hepC_noInf	plt	6	0.455202852	0.385447555	0.417431134
+%Hirano 2007b	hepC_Inf	plt	11	0.386774601	0.229170177	0.28780893
+%BC all 	    5	0.330556375	0.386385095	0.356297025	472	
+%BC hepC_noInf	5	0.491029213	0.411852866	0.447969438	94	
+%BC all         8	0.370831073	0.348019617	0.359063405	472	
+%BC hepC_noInf  6	0.477650748	0.424699113	0.449621278	94	
+%BC all 	    4   0.357703975	0.38512469	0.370908229	472	
+\begin{table}[ht]
+\caption{Precision, recall, and B-cubed scores for alternative systems using only temporal PLT data.}
+\label{pltdatatable}
+\vskip 0.15in
+\begin{center}
+\begin{tabular}{lccccr}
+\hline
+\hline
+method	& sample &k	& P	& R	& B-Cubed \\
+\hline
+\hline
+Bayesian clustering	& HVC no Tx & 5& 0.49& 0.41& 0.45 \\
+Bayesian clustering	& HVC no Tx & 6& 0.48& 0.42& 0.45 \\
+Bayesian clustering	& all & 4& 0.36& 0.39& 0.37 \\
+Bayesian clustering	& all & 5& 0.33& 0.39& 0.36 \\
+Bayesian clustering	& all & 8& 0.37& 0.35& 0.36 \\
+Hirano 2005 & HVC no Tx   & 6& 0.46& 0.39& 0.42 \\
+Hirano 2005 & HVC Tx   & 11& 0.39& 0.23& 0.29 \\
+Hirano 2005 & HVB   & 8& 0.26& 0.28& 0.31 \\
+		
+\hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\subsubsection{Hepatitis C, No Interferon Therapy}
+\label{hep_results_noinf}
+Figure~\ref{hepC_noinf_fig} shows the results of alternative clustering methods on the HCV population with no indication of interferon therapy.  Detailed scores appear in Table ~\ref{hepC_noInftable}.
+
+\begin{figure}[ht!]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/hepC_noInf.jpeg}}
+\caption{Comparison of semiparametric clustering with a various benchmarks}
+\label{hepC_noinf_fig}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{table}[ht!]
+\caption{Validation scores for HVC patients, no interferon therapy}
+\label{hepC_noInftable}
+\vskip 0.15in
+\begin{center}
+\begin{tabular}{lcccr}
+\hline
+\hline
+method	& k	& P	& R	& b-cubed \\
+\hline
+\hline
+Hirano 2007	& 8& 0.60& 0.31& 0.41 \\
+\textbf{Tsumoto 2012}	& \textbf{9}& \textbf{0.57}& \textbf{0.33}& \textbf{0.42} \\
+\textbf{Bayesian clustering}	& \textbf{4}& \textbf{0.47}& \textbf{0.55}& \textbf{0.51 }\\
+Bayesian clustering	        & 5& 0.50& 0.47& 0.48 \\
+\textbf{Bayesian clustering}	        &\textbf{ 6}& \textbf{0.48}& \textbf{0.54}& \textbf{0.51} \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+ Semiparametric Bayesian clustering improves on trajectory mining methods using temporal PLT and ALB data, which showed a 42\% b-cube value~\ref{Hirano07a,Hirano07b} and work publishes in 2012, which extended the approach to PLT, ALB and ChE data, and reports a cluster composition that corresponds with a 42\% b-cubed value ~\cite{Tsumoto12}.
+
+%UPDATE the table
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	4	0.466122023	0.554483985	0.506477906
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	5	0.495159527	0.469947497	0.482224198
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	6	0.476378599	0.538087179	0.505356065
+%Bayesian clustering (PLT)	hepC_noInf	plt	5	0.491029213	0.411852866	0.447969438
+%Hirano 2007b (PLT)	hepC_noInf	plt	6	0.455202852	0.385447555	0.417431134
+%Tsumoto 2012	hepC_noInf	alb-che-plt	9	0.567928605	0.328279479	0.416062542
+%Hirano 2007a	hepC_noInf	plt-alb	8	0.5956	0.3097	0.4075
+
+
+\subsubsection{Semiparametric Bayesian Clustering}
+To more thoroughly assess the performance of semiparametric clustering using gold standard results, Figure~\ref{spBayes} shows results for all patients, and the subset of patients with HVC, using temporal data from temporal PLT, ALB and ZZT data. The precision is on the $x$-axis and the recall on the $y$-axis.  The b-cubed values range from dark to light, with lighter values indicating higher scores.
+
+Table~\ref{spbdatatable} reports the results shown in~\ref{spBayes}.  Notably, the best assignment for HVC patients with no interferon therapy reported an 51\% B-cubed for $k=4$ with results for $k=6$ close behind.  For clustering all patients, the results show a 45\% B-cubed value for $k=4$.
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/spBayes.jpeg}}
+\caption{Comparison of semiparametric Bayesian clustering by patient population}
+\label{spBayes}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{table}[ht]
+\caption{Precision, recall, and B-cubed scores for semiparametric Bayesian clustering.}
+\label{spbdatatable}
+\vskip 0.15in
+\begin{center}
+\begin{tabular}{lcccr}
+\hline
+\hline
+method	& k	& P	& R	& B-Cubed \\
+\hline
+\hline
+All Pts	& 4& 0.35& 0.62& 0.45 \\
+All Pts & 5& 0.35& 0.52& 0.42 \\
+All Pts & 6& 0.36& 0.46& 0.40 \\
+All Pts & 7& 0.36& 0.42& 0.39 \\
+		
+\hline
+\hline
+HVC no Tx	& 4& 0.47& 0.55& 0.51 \\
+HVC no Tx & 5& 0.50& 0.47& 0.48 \\
+HVC no Tx & 6& 0.48& 0.54& 0.51 \\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+%Bayesian clustering	all	alb-plt-zzt	4	0.351527266	0.622462748	0.449311851
+%Bayesian clustering	all	alb-plt-zzt	5	0.352476136	0.518519429	0.419670851
+%Bayesian clustering	all	alb-plt-zzt	6	0.356380466	0.458481777	0.401034532
+%Bayesian clustering	all	alb-plt-zzt	7	0.358414504	0.420788916	0.387105207
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	4	0.466122023	0.554483985	0.506477906
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	5	0.495159527	0.469947497	0.482224198
+%Bayesian clustering	hepC_noInf	alb-plt-zzt	6	0.476378599	0.538087179	0.505356065
+
+
+
+
+
+%\subsubsection{Discrete versus Continuous Time Abstraction}
+%To validate the results of clustering platelet count values for the hepatitis data set, we used grading and staging data from liver biopsies. Figure~\ref{biopsy} show the result from the clustering with the highest highest purity (0.61\%) and obtained using continuous-time HMM abstraction paired with non-parametric Bayesian clustering.  Cluster purity obtained using spectral clustering, was notably lower, reporting a high of $0.40$.  Cluster membership is visualized in relation to highest biopsy grading, and reported by percent of the total for each grade ($n=468$).  A grading of four indicates cirrhosis of the liver or advance scarring. In addition to grading, biopsy activity is commonly used to stage liver disease and visualized in Figure 2. using the fill variation for each pie.
+
+%\begin{figure}[h]
+%\centering
+%\includegraphics[width=85mm]{fig/hep_2.jpg}
+%\caption{Hepatitis Clusters by Biopsy Staging and Activity}
+%\label{biopsy}
+%\end{figure}
+
+%External data for validating our glucose data set clustering was not available and intrinsic measures based on cluster silhouettes were used to assess cluster quality.  The results of CT-HMM abstraction paired with non-parametric Batesian clustering paired is reported in terms of average silhouette is shown in~\ref{table:sil}.  Spectral clustering was also paired with CT-HMMs.  Although the average silhouette value was overall lower (0.10), one large cluster had a average silhouette higher that that on the max for non-parametric Bayesian clustering.
+
+%\begin{table}[h]
+%\caption{Cluster Silhouettes}
+%\centering
+%\begin{tabular}{|l|c|c|}
+%  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+%   Cluster& Members & Average Silhouette  \\
+%   \hline
+%  $C_1$ & 153 & -0.04956 \\
+%  $C_2$ & 269 & 0.9416  \\
+%  $C_3$ & 132 & 0.1151  \\
+%  $C_4$ & 114 & -0.3712 \\
+%  $C_5$ & 337 & -0.5460 \\
+%  \hline
+%\end{tabular}
+%\label{table:sil} % is used to refer this table in the text
+%\end{table}
+
+%Compared with discrete-time HMM abstraction for the same data set, in previous work (Tamang 2011) we reported over 80 percent of patients with a good (0.60 or above) silhouettes value.  In comparison, continuous-time HMM abstraction report just over half of patients with a good silhouette value (54 percent).
+%\subsubsection{Non-parametric Clustering Alternatives}
+
+

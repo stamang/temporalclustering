@@ -1,0 +1,146 @@
+\subsection{Validation}
+There is no gold standard for the evaluation of results.  Instead, I assess intrinsic qualities of the generated clusters using both common metrics described in Section\ref{5_clust_alg}, and clinical context about the problem task.
+
+\subsubsection{Semiparametric Bayesian Clustering}
+Based on the results of applying our clustering approach to the glucose testing data, Figure~\ref{sil} shows the silhouettes by cluster for a four-state glucose model that generated five clusters.  Of the 1025 initial patients, our parameter learning technique converged, and produced model parameters that were then clusters for 1005 patients.  Each observation's silhouette is grouped by cluster along the y-axis, and members are sorted within each cluster by each assignment's value.
+
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/sil.jpeg}}
+\caption{Silhouettes by cluster for 4-state model.}
+\label{sil}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+ The value of 0.6 is generally the threshold for a good cluster in terms of similarity to other members of its own cluster and distinction from members of other clusters.  Table~\ref{glucose_cluster_stats} shows each cluster's size, mean and average silhouette value, and suggests that $c_0$ and $c_1$ are good assignments.
+
+ \begin{table}
+\caption{Size, Mean and Median Silhouette Values by Cluster}
+\label{gluc_stats}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lccccr}
+\hline
+ 	&$c_0$ 	&$c_1$	&$c_2$ 	&$c_3$	&$c_4$ \\
+\hline
+size	&263	&321	&262	&98	&61\\
+mean	&0.8841	&0.7267	&-0.1573	&-0.3669	&-0.3167\\
+\hline
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+The characteristic $Q$ matrices for each cluster are based on mean of the patient distribution for each model state.  In the four-state model the states reflect increasing disease severity, with the first indicating normal blood-glucose levels. Each $q_{ij}$ corresponds with the instantaneous risk of moving from state $i$ to state $j$.
+
+\begin{figure}
+\[Q_0= \left( \begin{array}{cccc}
+0     &   -25.55&   -11.09& -14.54\\
+14.66 &        0&    -4.74&	  1.55\\
+12.72 &     3.84&	     0&  -1.49\\
+11.09 & 	3.38&  	-13.87&    0
+
+\end{array} \right)
+%
+Q_1= \left( \begin{array}{cccc}
+0 & -2.28	&-2.83	&-5.3\\
+-0.61&  0&	-2.24&	-4.19\\
+-0.76&	-1.61&	0 &  -3.72\\
+-0.52&	-2.84&	-2.59& 0
+\end{array} \right)
+\]
+
+\[ Q_2= \left( \begin{array}{cccc}
+0& -0.65&	-12.45&	-11.92\\
+4.93&    0&	-7.30&	-8.62\\
+8.00&	0.37& 0&	-5.60\\
+7.15&	-1.31&	-1.52& 0
+\end{array} \right)
+%
+Q_3= \left( \begin{array}{cccc}
+0 & -20.04&	-4.64&	-8.17\\
+8.98& 0&	-0.36&	-0.46\\
+2.95&	-2.13& 0&	-7.31\\
+5.52&	0.75&	-2.35& 0
+\end{array} \right)
+\]
+
+\[ Q_4= \left( \begin{array}{cccc}
+0 & -2.76&	-0.39&	-3.85 \\
+-13.73& 0&	-5.50&	-7.00 \\
+0.35&	0.92&   0&	-2.66 \\
+6.38&	-5.97&	2.22& 0
+
+
+\end{array} \right)
+\]
+\caption{Intensity Matrices for 4-state, 5 cluster glucose model}
+\label{fig:glucq}
+\end{figure}
+
+\subsubsection{Cluster Comparison}
+
+To examine patient subpopulation by cluster characteristics, time series statistics for each cluster. is shown in Table~\ref{gluc_stats}.  Reported are the number of total tests (Tests), the number of contiguous blocks of daily tests (Blocks), the entropy of the measurement sequence (Entropy), and the fraction of days measured by cluster (Fraction).
+
+\begin{table}
+\caption{Time series statistics aggregated by cluster}
+\label{gluc_stats}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lccccr}
+\hline
+k 	&n 	&Tests 	&Blocks 	&Entropy 	&Fraction \\
+\hline
+0	&263	&8.6	&7.81	&0.05	&0.01\\
+1	&321	&39.64	&16.98	&0.14	&0.04\\
+2	&262	&22.00	     &13.53	&0.10	&0.02\\
+3	&98	    &24.77	&11.38	&0.10	&0.02\\
+4	&61	    &16.74	&7.69	&0.08	&0.02\\
+\hline
+T 	&1005	&24.08	&12.57	&0.10	&0.02\\
+\hline
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+Two aggregate time series statistics that have been shown to be informative for feature-based clustering, \emph{entropy of the measurement sequence} and the \emph{number of visits} can help to display visual distinctions among the clusters.   Figure~\ref{box_glucose} compares the clusters by these two aggregate measures.
+
+
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/glucose_k5.jpg}}
+\caption{Average entropy and number of visits by cluster}
+\label{box_glucose}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+To further analyze $c_0$ and $c_1$, I visualize the 0/1 measurement vector with a heat map that shows a light color for the presence of a glucose test and black for the absence of a physicians ordered glucose test. Patients of each cluster appear in the order of increasing visits and are represented in full in detail in Figure~\ref{glucose_seq}.
+
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/grid_datavis.jpg}}
+\caption{Highest intrinsic quality cluster 0/1 sequences.}
+\label{glucose_seq}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+
+
+
+
+
+

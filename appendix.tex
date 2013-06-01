@@ -1,0 +1,92 @@
+\begin{table}
+\begin{center}
+    \caption{Comparison of clustering techniques for sequential data}
+\label{hepaticpanel}
+\begin{tabular}{| p{2cm} | p{10cm}  |}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{Laboratory Tests} } \\
+  \hline
+  \multicolumn{2}{|c|}{Hepatic Function Panel}\\ \hline
+  Platelets (PLT) & Platelet counts for hepatitis patients with cirrhosis are low, but can be the result of other causes.  This lab test measures the platelet number in the blood. \\ \hline
+  Bilirubin (D-BIL) & This test measures the bilirubin level in the blood, and is produced by the breakdown of hemoglobin. If the liver is not functioning correctly, it will not be properly excreted.\\ \hline
+  Colinesterase (CHE) & Michael Duberry \\ \hline
+  \multicolumn{2}{|c|}{Urine Test}\\ \hline
+  DC & Dominic Matteo \\ \hline
+  RB & Dider Domi \\
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{landscape}
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/sequence_reps.jpg}}
+\caption{Measurement sequence transformations for daily glucose test patterns}
+\label{sequence_reps}
+\end{center}
+\vskip -0.2in
+\end{figure}
+\end{landscape}
+
+
+\begin{landscape}
+\begin{table}
+    \caption{Comparison of clustering techniques for sequential data
+    \label{clusteringAlgs}}
+    \begin{tabular}{| p{2cm} | p{10.5cm} | p{8.5cm}  |}
+    \hline
+    \textbf{Method} & \textbf{Strengths and Limits} & \textbf{Description} \\ \hline
+
+Relocation Clustering & More scalable than eigenvalue decomposition based techniques, but limited to equal length sequences, and shows lower performance on time series data. & Procedure begins with and initial clustering, $C$, with $k$ known $a priori$. For each $t_i$ the dissimilarity matrix is calculated and stored to find a clustering $C'$, such that $C'$ is better than $C$ in terms of the generalized Ward criterion function.\\ \hline
+
+Agglomerative Hierarchical Clustering & Can work with unequal length sequences, reveals hierarchical properties of observations, number of clusters is not a parameter; however, it does not scale well to long time series, and shows poor performance with unequal length sequences.  Suffers from the inability to adjust once a merge decision has been executed. & Clustering begins by placing each object in its own cluster, then clusters are merged into larger clusters, until all objects are in a single cluster, or the stop criteria is satisfied. At each step, sum-of-squares variance is computed for all possible mergers, and the smallest value selected.\\ \hline
+
+   Divisive Hierarchical Clustering & can work with unequal length sequences, reveals hierarchical properties, and $k$ is not a parameter; however, it does not scale well to long time series, and shows poor performance with unequal length sequences. & Clustering generates a nested hierarchy of similar groups of according to a pairwise distance matrix.\\ \hline
+
+$k$-Means and Fuzzy $c$-Means & $k$-means is simple to implement, intuitive and provides good performance when cluster shapes are convex.  Also, it easily extends for fuzzy partitioning ($c$-means). Cannot work with unequal length sequences, and are sensitive to the initialization of cluster means & $k$-means begins with an initial assignment of cluster means that is iteratively optimized to minimize the objective function, which is typically the total distance between all points from their respective cluster centers..  \\ \hline
+
+Self-Organizing Maps (SOM) & sometimes called Kohonen maps, are a class of neural networks with neurons arranged in a low-dimensional structure.  Typically provide good performance, but does not work well with time series of unequal length due to the difficulty involved in defining the dimension of weight vectors. & Begins by assigning small random values to the weight vectors, $w$, of the neurons and iteratively updates $w$ until convergence on local estimates.\\ \hline
+
+   Spectral Clustering & more agnostic about the overall shape that a collection of time-series data forms and show high performance in many settings; however, may not scale to large sets, and time-series data has inherent structure which may be disregarded by a fully non-parametric method & Spectral clustering is a relaxation of NCut into a linear system which uses eigenvectors of the graph Laplacian to cluster the data.  More detail is provided in Section~\ref{subsec:sc}.\\ \hline
+
+       Bayesian Hierarchical Clustering & Like spectral clustering,  Bayesian Hierarchical Clustering (BHC) used a model-based criterion for clustering that avoids unnecessary parametric assumptions; however, it doesn't scale well (existing approaches are quadratic w.r.t. number of data points) and cannot incorporate tree uncertainty & BHC is an extension of agglomerative hierarchical clustering that uses marginal likelihoods of a probabilistic model instead of distance measures for deciding on cluster merges and to control over-fitting.\\ \hline
+    \end{tabular}
+\end{table}
+\end{landscape}
+
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/c0.jpg}}
+\caption{State Sequence for Patients in Glucose Cluster $c_0$}
+\label{c0}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/c1.jpg}}
+\caption{State Sequence for Patients in Glucose Cluster $c_1$}
+\label{c1}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+ \begin{figure}[ht]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=\columnwidth]{fig/glucose_qmatrix.jpeg}\\
+  \caption{Characteristic $Q$ Matricies by Cluster}\label{glucose_qmatrix}
+\end{figure}
+
+
+
+
+
+
+
+
+

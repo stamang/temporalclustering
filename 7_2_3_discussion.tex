@@ -1,0 +1,35 @@
+\subsection{Discussion}
+I discuss the key findings based on intrinsic validation of the cluster assignments using silhouette values and clinical context.  In order to interpret the temporal summarization that is provided by the abstraction technique, I visualize distinctions between patient subpopulations based on the clusters that were generated. Their purpose is to aid the interpretation of clustering results that based on average model parameters for the patients assigned to each of the groups.
+
+
+\subsubsection{Cluster Comparison}
+
+More than half (584) of the entire sample were assigned to the clusters that show high intrinsic validation scores, $c_0$ or $c_1$.  Although the length of all patient records is about three years, observable differences can be seen for for $c_0$ and $c_1$, providing further evidence that these clusters are clinically meaningful.
+ 
+ Figure~\ref{box_glucose} shows differences in terms of the entropy of the measurement sequence by the number of visits.  In my previous work that compared feature-based abstraction methods with model-based methods, these two aggregate statistic were informative for clustering.  The figure shows that patients in $c_0$ have a sequence entropy value that is less than half the average in $c_1$.  Also, they have about four times as less tests overall.  The other clusters fall between these values, with two of them grouping about midway, suggesting that their composition is more heterogenous, or that the have some glucose management issues, but that they do not lead to multiple day hospitalizations where glucose ins continually monitored.
+ 
+ \subsubsection{Diabetes Trajectory}
+  This application aims to discover patient groups from the glucose data set that are useful for understanding and defining characteristic groups of patients from temporal diabetes-related data.  
+  
+   Figure~\ref{glucose_seq}, shows a heat map for  $c_0$  1/0 sequences that is sparse.  The only time multiple daily measurements are observed is at the very beginning of the sequence, and almost no members ever exhibit the most severs state, 4.  The values of the transition matrices (Figure\ref {fig:glucq})also indicate that $c_0$ corresponds with patients that are more likely to maintain blood-glucose values.  In contrast, the $c_1$  1/0 sequences that is more dense, and patients exhibit higher states on average.
+  
+In order to interpret the abstraction models that provide summarize each patient's temporal characteristics, I visualize the $Q$, or intensity matrix, that is learned for each patient.  In each cluster is represented by a different colored horizontal bar that reflects the z-scaled value for the state and reflects a cluster average.  The 16 plot in Appendix Figure\cite{glucose_qmatrix} correspond with the each of the $q_{ij}$ of the 4x4 intensity matrix.
+
+A temporal trend that is consistent with the better health associated with patients in $c_0$ and poorer health in $c_1$ can be observed.  Figure~\ref{glucose_q1matrix} compares the z-scaled values for the state 1 and it's possible transitions.  It shows that patients in $c_0$, indicated as 1 on the y axis and a salmon color, are more likely to stay in state 1 than transition to higher states, 2,3,or 4 compared with the average.  Patients in $c_1$, indicated as 2 on the y-axis and an olive color,  are the opposite, and more likely to transition the the higher states.  Other clusters, with the exception of $c_4$, which is the smallest cluster and shows a high proportion of patients in higher states, do not show a consistent trend as the states increase.  The characteristic intensity matrices for clusters $c_2$ shows that patients are more likely to stay in $q_1$ than progress to $q_2$ but a small risk of transition to higher states.  The last cluster, $c_2$, indicated by green, and 3 on the y-axis shows the opposite behavior, and an increased risk.
+
+ \begin{figure}[ht]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=\columnwidth]{fig/q1_glucose.jpeg}\\
+  \caption{Characteristic $Q$ Matrices by Cluster}\label{glucose_q1matrix}
+\end{figure}
+ 
+ 
+ Although a clinical significance of $c_2, C_3$ and $c_4$ can be interpreted form the results, it should be considered that these clusters have poor intrinsic quality.  Also, that they are smaller in size, and characteristic $Q$ matrix may be more sensitive to parameter changes as new observations are made available for learning.  Also, these clusters are less distinctive in Figure~\ref{box_glucose}.
+\subsubsection{Discrete Versus Continuous Time}
+
+
+\subsubsection{Clinical Context and Relevance}
+
+ 
+ 

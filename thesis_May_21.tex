@@ -1,0 +1,80 @@
+\documentclass[letterpaper,12pt]{report}
+
+%\setlength{\parindent}{2em} %\setlength{\parskip}{1ex}
+%\addtolength{\textheight}{24mm} \addtolength{\textwidth}{32mm}
+%\addtolength{\topmargin}{-14mm} \addtolength{\oddsidemargin}{-30mm}
+%\addtolength{\evensidemargin}{-30mm}
+\usepackage{graphicx} % more modern
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{graphics}
+\usepackage{lscape}
+\usepackage{times}
+\usepackage{pgf}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows,automata}
+
+% styles for flowcharts
+\tikzstyle{decision} = [diamond, draw, fill=blue!20,text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,text width=5em, text centered, rounded corners, minimum height=3.5em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{block2} = [rectangle, draw, fill=blue!32,text width=5em, text centered, rounded corners, node distance=4cm, minimum height=2.5em]
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, text width=5em,text centered,node distance=2cm,minimum height=2em]
+\tikzstyle{block3} = [rectangle, draw, fill=blue!20,text width=5em, text centered, rounded corners, node distance=3.5cm, minimum height=2.5em]
+
+
+%\includeonly{1_introduction}
+\begin{document}
+\doublespacing
+
+\pagenumbering{roman}
+\tableofcontents
+\cleardoublepage
+\listoffigures
+\cleardoublepage
+\listoftables
+\cleardoublepage
+
+\input{0_abstract}
+
+\newpage
+\pagenumbering{arabic}
+
+
+\include{1_introduction}
+%motivation
+%contribution
+%%%supervised and unsupervised learning
+%%%temporal mining
+%%%Electronic Health Records
+%%%Disease Progression Models
+
+\include{2_temporal_dynamics}
+\include{3_relatedwork}
+\include{4_abstraction}
+\include{5_cluster_alg}
+\include{6_extending}
+\include{7_expts}
+\include{8_conclusions}
+
+\bibliographystyle{plain}
+\bibliography{dissertation}
+
+\appendix
+\chapter{Appendix}
+\input{appendix}
+
+\end{document}

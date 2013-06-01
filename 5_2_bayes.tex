@@ -1,0 +1,60 @@
+\subsection{Nonparametric Bayesian Clustering}
+Bayesian nonparametric models have applied for both supervised and unsupervised learning task where it's desirable for the number of modeling parameters to adapt with the complexity of the data.   For this reason, they are labeled `nonparametric' and contrast parametric methods that require models parameters are fixed.  Often named by the processes they are used to model, they can be used for clustering, as a density estimator, the features for regression, and more.
+
+The models assume an infinite parameter space, but use only a subset of all potential parameters to define a finite data set.   Since the parameters are a function the finite data set, or observation sample, the parameters that explain the underling process can vary with the size and complexity of the data (citation Peter Orbanz).
+
+A main challenge posed by many traditional clustering algorithms is selecting the number of groups, $k$.   Some approaches uses to estimate $k$ are based on the spectral gap, or predictive estimates.  However, these are heuristics, and don't guarantee the choice of $k$, and more importantly, for many clustering problems $k$ is unrealistic to assume that $k$ is fixed.
+
+By defining the clustering problem as identifying the components of infinite mixture, where $k$ is random variable in the model,  nonparametric Bayesian approaches allow for the definition of more flexible clustering models.  Relative to other nonparametric clustering methods such as spectral clustering, they do not require that $k$ is expressed a priori.  Also, nonparametric Bayesian cluttering provides a generative model that can describe group structure at the population and subpopulations level, more easily lending itself to interpretation by a domain expert.
+
+\subsubsection{Mixture Models}
+nonparametric Bayesian methods can be used to identify the number of component, and their densities, in a finite mixture model.  The density function of a finite mixture model is defined as:
+
+$$p(x) = \Sigma_{k=1}^K \pi_k p(x|\theta_k)$$
+
+where $x$ is the data set, $\pi$ is the mixing proportion, and $\theta_k$ are the model parameters for the cluster $k$.
+
+In the nonparametric Bayesian application setting, we define the mixture model as that of one with infinite components.  We can define the discrete case in the form of the integral $p(x) = \int p(x|\theta)G(\theta)d\theta$, where $G = \Sigma_{k=1}^K \pi_k \delta_{\theta_k}$~\cite{OrbanzT10}, which extends to the following in the case of infinite components:
+
+$$G = \Sigma_{k=1}^\infty \pi_k \delta_{\theta_k}$$
+
+for a Bayesian non-parametric models with a potentially infinite value of $k$.
+
+\subsubsection{Dirichlet Distribution}
+In Bayesian statistics, a \emph{Dirichlet distribution}, Dir$(\alpha)$, is the conjugate prior of the categorical distribution and multinomial distribution.   In terms of a finite mixture model with $k$ components, it is a $k$-dimensional generalization of the beta distribution.
+
+Since we can view model components as groups in the data, it has natural extensions for clustering.   Specifically, if a population can be described by the probability distribution $\Theta$ with components $\theta_{1},...,\theta_{k}$ that sum to 1, we can reasonably infer
+
+$$\Theta \sim \text{Dirichlet}\{\alpha_{1},...,\alpha_{k}\}$$
+
+The probability density function for a Dirichlet distribution uses a normalization factor that is defined in terms of the multinomial beta function, $B(\alpha)$,  that is expressed in terms of the gamma function:
+
+$$B(\alpha)= \frac{\prod_{i=1}^{k} \Gamma(\alpha_{i})} {\Gamma(\sum_{i=1}^{k} \alpha_{i})}$$
+
+\noindent and the probabilities $p$ and parameters $\alpha$ of each of the $k$ components:
+
+$$\text{Dirichlet}(p;\alpha)=\frac{1}{B(\alpha)}\prod_{i=1}^{k} p_{i}^{\alpha_{i}-1}$$
+
+\subsubsection{Dirichlet Process Gaussian Mixture Modeling}
+One approach to nonparametric Bayesian clustering is Dirichlet Process Gaussian Mixture Modeling (DPGMM).   A Bayesian approach requires that a prior distribution is assigned to a model, and the uncertainly in the parametric form can be expressed as a Dirichlet prior~\cite{Gorur}.
+
+Here, a Dirichlet process (DP) is the prior over the mixing distribution, $G$.  The DP has several algorithmic metaphors that help to describe approaches to the specification of the prior parameters.  Using exchangeability, the Polya urn problem can be used to describe a DP.  Another popular scheme is the the Chinese restaurant process (CRP), which describes a distribution of groups.  Lastly, the representation of the DP can be described as a stick-breaking prior.
+
+A Dirichlet process defines a distribution over distributions. Also, referred to as a measure on measures it is characterized by two parameters: a base distribution $G_0$, from which samples are drawn, and a positive scaling parameter $\alpha$
+
+$$G \sim DP(G_0,\alpha)$$
+
+More intuitively described as a `splitting' criteria, $\alpha$ is a scaling factor that is associated with the probability of forming a new cluster.  The base distribution is defined by $G_0$.
+
+For a sample, $G$, drawn from the base distribution $G_0$, if $G \sim DP(G_0,\alpha)$ then for any set of partitions $A_1 \cup A_2 \cup ... A_k$ of $A$:
+$$(G(A_1),...,G(A_k)) \sim Dir(\alpha G_0(A_1),...,\alpha G_0(A_k))$$
+
+(cite fergusen 1973 somewhere).
+
+In the the Dirichlet process mixture model, the DP is used as nonparametric prior in a hierarchical Bayesian model, where $G$ is portioned according to the prior.   It was first applied for density estimation, but is now applied widely for clustering.   Dirichlet Process Gaussian Mixture Modeling (DPGMM) defines a  Dirichlet process mixture model by taking the limit of the number of mixture components as a hierarchical Gaussian mixture model approaches infinity.  Two methods used to specify the priors are Markov cain Monte-Carlo (MCMC) and variational inference.
+
+
+
+
+
+

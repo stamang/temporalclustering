@@ -1,0 +1,62 @@
+\chapter{Semiparametric Bayesian Clustering}
+\section{Modeling Disease Dynamics}
+
+I conducted two studies using patient data associated with chronic disease.  As noted earlier, both are secondary data sources that represent challenges for modeling temporal processes in that they are subject to various level of incompleteness, contain variable length observations, and are subject to arbitrary sampling schemes, the most relevant of which, in context of EHR data, is self-selection.
+
+In the previous Chapter~\ref{6_extending}, I detail the methods used for my experiments that extend current applications of semiparametric temporal clustering.  The broad aim of each experiment is to group patients of similar health status together in the same cluster, and to represent distinct qualitative groups in separate clusters, with each cluster being of maximal size.
+
+The specific type of temporal process that this work aims to capture is chronic disease progression, and we focus on two on disease-related observations for diabetes and hepatitis.  For these conditions there is an understanding of disease indicators that are used to direct diagnosis and clinical care, but the trajectories of decline that correspond to more acute disease states, or increased service utilization at the patient and population level is not well-understood.   To provide new insights for decision making, the ability to refine a patient population into component groups that corresponds with risk types are useful for the diagnosing new patients and determining the most appropriate treatments for those with chronic diseases.
+
+
+
+
+\label{ch:new}
+\section{Continuous Time Temporal Abstraction}
+Probabilistic graphical model for modeling dynamic phenomena have demonstrated their use for a variety of tasks, but make a simplifying discrete-time assumption that can be problematic.  Our approach builds on disease modeling theory from epidemiology to represent patient level dynamics with continuous-time Markov models.  Abstraction wit CT models do not have the same limitations of traditional methods for longitudinal data analysis, or DBN abstraction.  In contrast, they are more appropriate for modeling certain types of real-world data that reflect variable time granularities, incompleteness and a population for which the number of clusters is a function of the number of observations.
+
+The specific models we use are based on finite state \emph{continuous-time (CT) Markov processes}.  Rather than use the sequences of values directly, and based on recent work outlining a framework for \emph{semi-parametric clustering} of time series data, we build probabilistic models, abstractions, of these sequences using continuous-time models.  Specifically, we extends temporal abstraction to an instance of CT Bayesian networks (DBNs) based on a disease progression model used by epidemiologists.  Although this model has been used to examine population based disease dynamics, it has not been applied for comparisons among patients, or as the basis for temporal clustering.
+
+\input{4_4_2_ctMarkov}
+
+\subsection{Multi-state Markov Models}
+
+\section{Pairing Nonparametric Clustering}
+A variety of researchers have pointed to the limitations of casting clustering as a partitioning problem, where number or clusters are known $a priori$.  Not only does this suggest that the categories exist independently of problem context, and the size and complexity of the data set, but it can force the membership of observations into meaningless clusters, and lead to spurious clusters.
+
+For example, methods that determine the number of clusters $k$ are heuristics and often produce unsatisfying results.  However, research shows that humans employ multiple strategies for finding $k$, and even on simple data sets the number of possible interpretations can be high~\cite{Lewis09}.
+
+\subsection{Spectral Clustering}
+Many varieties of spectral clustering algorithms exist and in this work we use a method first proposed by Ng et al.~\cite{Ng01onspectral}, which builds upon existing work by normalizing the Laplacian affinity matrix before eigenvalue decomposition and selection of $k$ largest eigenvalues.
+
+More background on spectral clustering can be found in Chapter X.  A an outline of this approach is as follows:
+
+\begin{itemize}
+\item Create the affinity matrix $A$ defined by $A_{ij} = exp(-||s_i-s_j||^2/2 \sigma^2$ if $i \neq j$ and $A_{ii}=0$
+\item From $A$ define $D$ as the diagonal matrix where $D_{ii}$ is the sum of the $i$th row
+\item Construct the matrix $L=D^{-1/2}AD^{-1/2}$
+\item Find the $k$ largest eigenvectors of $L$, $\{s_1,...,s_k\}$ and form the matrix $S$ by stacking them
+\item Define the matrix Y by renormalizing each row in $X$ and perform $k$-Means (or another clustering method) to obtain a clustering assignment $C=\{c_1,...,c_k\}$
+\item For each initial point $x_i$ where $i \in \{1,...,n\}$, if row $i$ of the matrix $Y$ was assigned to the cluster $j$ where $j \in \{1,...,k\}$
+\end{itemize}
+
+
+\subsection{Nonparametric Bayesian Clustering}
+Bayesian approaches for modeling require that a prior on the distribution is assumed.  One way to model uncertainly in this prior is to use a nonparametric approach, meaning one that allows the parameters used to describe the prior adapt to the complexity of the data.  One flexible prior for modeling mixtures is the Dirichlet prior.
+
+These methods typically work by assuming that the process is generated by a potentially infinite amount of parameters, but that for any finite sample can be expressed by a finite number of parameters that are exhibited as a function of a sample-specific characteristic.  In the case of clustering this is the number of components in a mixture model, $k$.
+
+There are certain properties of data sets that make these assumptions more true and problems where the flexibility is desirable in modeling.  For example, in many real-world data sets the number of clusters is dependent on the sample size.  Demographic research shows that as population size grows so does the variability of demographic categories and it unnatural to fix $k$, a priori.  Also, determining $k$ is a challenge posed by many traditional clustering algorithms.
+
+In addition to abstraction with a continuous-time model that draws from work from Bayesian networks, stochastic processes and disease progressing modeling, we extend the clustering component to the \emph{nonparametric Bayesian setting}.  This allow for the number of clusters to be expressed as a function of the sample size, and lending a more natural interpretation to a domain expert.  Specifically, we apply Dirichlet Process Gaussian Mixture Models for determine the number of states in a CT-model and to cluster temporal abstractions.
+
+To compute the model likelihoods and posterior distribution of the clusters we used a mean variational inference for the infinite Gaussian mixture model instead of Gibbs sampling using (Pedregosa 2011).
+
+
+%Data Sampling and Incompleteness in Health Records}
+%section{Modeling Chronic Disease Trajectories} z
+%To provide a better understanding of dynamic changes that can occur during the course of a patient’s disease trajectory, this work applies exploratory analysis methods to temporal data. One major challenge posed by modeling patient level data is that disease related observations are typically documented only during hospital or physician visits, resulting in irregular time intervals. Also, a patient’s measurement sequence be short or can span over many years and the nature of the observation scheme (e.g., fixed, random or selfselected) can be unclear.
+
+
+\subsection{Adaptation to New Problem Tasks}
+Lastly, to keep pace with the proliferation of data, learning methods that can separate problem semantics and algorithmic components facilitate reuse.  We not only describe a new temporal clustering method to more accurately represent continuous-time data that does not fit the canonical form of a time series, but similar to other problems based on the expressive language of DBNs, flexible enough to adapt to new problem semantics with little algorithmic tuning.
+

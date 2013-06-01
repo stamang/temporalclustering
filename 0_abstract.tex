@@ -1,0 +1,16 @@
+\begin{abstract}
+Although temporal data provides critical context for many real-world reasoning tasks, incorporating the temporal dimension into an analysis can present methodological challenges.  Traditional methods from statistics are limited in their ability to process large-scale secondary data sources, and data mining approaches have primarily focused on static data sets.  However, few real-world data sets are by nature static, or are designed to measure stationary phenomena; rather, they are dynamic.
+
+Using electronic health record (EHR) data as a case study, I develop a new exploratory analysis method to facilitate meaningful use of abundant temporal EHR data and provide insights into chronic disease progression.  Semiparametric clustering is a framework that uses parametric models to provide a principled way to summarize, `\emph{abstract}', variable length temporal sequences for comparison, and a nonparametric clustering step to reveal inherent groups.  To model the dynamics of chronic conditions that may progress over a period of years, I extend current applications of the semiparametric clustering to learn characteristic groups of patients from EHR repositories with temporal sequences that are variable length, subject to a variety of sampling schemes, and contain data that is not missing at random.
+
+Specifically, continuous-time models are used to more directly represent time, and address the limitations of discrete-time abstraction. Also, current applications of semiparametric clustering require specifying $k$, the number clusters, $a$ $priori$. I propose pairing model-based abstraction with a nonparametric Bayesian clustering method that allows $k$ to be expressed as a function of the size and complexity of the patient population.
+
+%To model chronic disease dynamics, which may evolve slowly, over years, we extend current applications of the semiparametric clustering framework~\cite{JebSonTha07a} for learning patient and population level disease characteristics from arbitrarily sampled longitudinal patient data.  Specifically, we use parametric models based on continuous time Markov models paired with nonparmetric Bayesian clustering and we show results for two distinct data sets.
+
+ Clustering performance is evaluated on two clinical data sets.  Using lab data from hepatitis patients, I show a 20\% relative improvement on a benchmark for grouping patients by fibrosis score.  The second data set contains encounter data, indicating physician ordered glucose test for hospitalized patients.  Although there is no gold-standard for comparison, my method can detect recognizable differences among discovered groups that can be visualized, and produces good clusters based on intrinsic quality metrics.
+
+
+%Although the discrete-time assumptions these parametric models make are an useful simplifying assumption for many data sets, they can be problematic when data is not missing at random.  Also, a key limitation of many clustering methods is that the number of clusters must be indicated $a priori$. For patient data, where the number of groups can vary based on the sample a more flexible approach that allows $k$ to be expressed as a function of the size and complexity of the data is more desirable.
+
+
+\end{abstract}

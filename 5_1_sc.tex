@@ -1,0 +1,47 @@
+\subsection{Spectral Methods}
+\label{subsec:sc}
+\emph{Spectral graph theory} has been applied in many fields to address the limitations posed by centroid-based definitions of a cluster.  They are based on performing the eigenanalysis of graphs.  \emph{Spectral clustering} recasts graph partitioning as a eigenvector problem.
+
+Eigen- is a German word for "self" or "characteristic".  Eigenvalues are derived from a $n$x$n$ (square) matrix and typically represented as $\lambda$.  If $Ax = \lambda x$ and $x$, where $A$ is a $n$x$n$ matrix and $x$ is a non-zero vector, then $x$ is the eigenvector.
+
+Eigenvectors are also known as `steady-state' vectors.   For example, if a Markov chain converges after many steps any row of that matrix is an eigenvector for $A^T$.   Eigenvectors are useful for characterizing the motion structure, and the one of highest magnitude, the `dominant eigenvector', can be described as a natural frequency.
+
+Spectral clustering provides a non-parametric approach by using eigenvector segmentation, or graph partitioning based on graph cuts.  Matrix theory allows for the rewriting of a matrix in terms of smaller matrices, or blocks.  In the context of clustering, the blocks correspond to bunches, or groups of points where the similarity among points in the same bunch is high, but low relative to other points in alternative bunches.
+
+Using a graph, $G=(V,E)$ where $V$ is a set of observations represented as vertices $\{x_{i}, . . . , x_{n}\}$ and $E$ a set of edges representing the similarity between observations, spectral clustering algorithms formalize the partitioning, problem with a variety of different approaches~\cite{Shi00,Ng01onspectral}.  There is no clear best method, but what is common to all of them is the use of an $nxn$ matrix to stores values to indicating the strength of the relation, $x_{i,j}$ where $i$ and $j\in \{1,...,n\}$, weighted by similarity.  The more similar $x_{i}$ and $x_{j}$ the higher the value.  In order to make computation more efficient, for each point only the number of nearest neighbors, $n$, appear in $S$.
+
+Given the set of observations to be clustered, $X=\{x_{1}, . . . , x_{n}\}$ and the number of clusters $k$, a general approach to spectral clustering is:
+
+\begin{itemize}
+	\item Represent the similarity among all pairs of points as an $n$x$n$ affinity matrix, $W$, where $W_{ii}=0$
+	\item Compute the Laplacian matrix, $L$ from $W$
+	\item Calculate the top $k$ eigenvectors of $L$
+	\item Define $U$, as an $n$x$k$ matrix using the $k$ eigenvectors of $L$
+     \item Apply $k$-means on the rows of $U$ to obtain a clustering assignment $C=\{c_1,...,c_k\}$
+     \item Assign each $x_i \in X$; if row $i$ of the matrix $U$ was assigned to the cluster $C_j$ where $j \in \{1,...,k\}$ then $x_i$ is a member of $C_j$
+ \end{itemize}
+
+Figure~\ref{min_cut} visualizes the nodes and edges connecting nearest neighbors.  To calculate the similarity between any two observations, the pairwise affinity, $w_{i,j}$, is computed using the norm of the difference between the two vectors $x_{i}$ and $x_{j}$:
+$$w_{ij}=d(x_{i},x_{j})=\text{exp}\left\{\frac{||x_{i}-x_{j}||}{\sigma^{2}}\right\}$$
+where the parameter $\sigma$ controls the width of local neighborhoods in the data.
+
+\begin{figure}[h]
+\centering
+\includegraphics{fig/min_cut.jpg}
+\caption{Minimum Cut}
+\label{min_cut}
+\end{figure}
+
+The weighted adjacency matrix of $G$ is the matrix $W = (w_{ij})i,j=1,...,n$ representing the weights between all connected points, or `affinity'. If $w_{ij} = 0$, then $x_{i}$ and $x_{j}$ are not connected by an edge.
+
+The minimum cut of the the weighted adjacency matrix, $W$, determines the optimal partitioning of the dataset.  A cut between any two vertices can be calculated as follows:
+$$Cut(C_{1},C_{2})=\sum_{i\in C_{1}}\sum_{i\in C_{2}}w_{ij}$$
+
+Spectral clustering algorithms recursively partitions a dataset by identifying the minimum cut and removes edges until $k$ clusters are identified. The problem of identifying the minimum cut is NP-hard; however there are more efficient approximations that are based on linear algebra using graph Laplacians and their basic properties.
+
+The degree matrix $D$, is defined as the diagonal matrix of the degrees $d_{1},...,d_{n}$, where each degree of a vertex $x_{i} \in V$ is determined by the sum of the weights for the row:
+$$d_{i}=\sum_{j=1}{n}w_{ij}$$
+
+The graph Laplacian is defined using the degree matrix, $D$, and the $W$:
+$$L=D-W$$
+\noindent and used to identify the first $k$ eiginvectors that are used to create an eigenvector transformation of the data $U$.  Operating on $U$, $k$-means is then used for clustering the data and in the final step in the projected back to the initial data representation.

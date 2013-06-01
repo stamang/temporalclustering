@@ -1,0 +1,53 @@
+\chapter{Temporal Clustering}
+\label{sec:clustering}
+The goal of clustering algorithms is to partition $n$ observations from a population sample, $X$=$\{x_{1}, . . . , x_{n}\}$, so that each observation, $x_{i}$ where $i \in \{1,...,n\}$, is grouped into one of $k$ disjoint clusters.  They use a various optimization methods with the goal of assigning each $x_{i}$ to one group, where points in the same group are more similar and observations associated with different groups are dissimilar to each other.
+
+The potential of clustering methods has already been demonstrated in the research literature.  Application have led to important findings in seemingly unstructured data.  For example, it has been successfully applied to identify regions in animal genomes that correspond with biomarkers for diseases such as cancer~\cite{Srivastava,Ewald} automatically identify themes in text \cite{Wang2012}, and many other learning tasks where labeled may be not be readily available~\cite{post08,XinSohJor2006}.
+
+Despite successful applications, a topic that continues to be debated is the evaluation of clustering results~\cite{Guyon09}.  For many data sets, the search for a true or `gold' standard maybe futile.  When working with multi-faceted processes such as health, which can be assessed on the phenotypic and genotypic level, contradictions can appear when considering only one.  Similarly, classification of organisms also poses diverging opinions. Despite the hundreds of years of scientific examination by the most notable biologists in the world, and more recent innovations that allow for the sequencing of entire genomes, there is still arguments about the system of nomenclature.
+%, leading us the the question, `If there is no true classification, how can there be a true clustering for a real-world problem'?
+
+Although there has been a variety metrics for measuring the extrinsic and intrinsic quality of groups, some still consider clustering a craft rather than a science.  However, we continue to perform clustering, use these metrics, and compare results with established benchmarks and with good reason.  With the arrival of massively large social, and health data sets, many of which we predict are in their infant stages, methods that can be used to preprocess data, making consequent analytic steps or human perusal easier, or reveal unseen, meaningful pattern that were not predicted by researchers will be highly desired.
+
+In terms of clustering the entities in our datasets, we make the assumption that \emph{a clustering assignment is valid if and only if the indicators for the phenomena within a group are correlated, but indicators for patients in different groups are uncorrelated or not as strongly correlated.}
+
+Different clustering algorithms have been developed to suit a variety of tasks and types of data, and one way to broadly describe them is in terms of parametric assumptions.
+Parametric clustering imposes a structure distribution to structures and this has clear benefits in terms of efficiency and performance when the assumption, e.g. clusters are Gaussian, is true.  In contrast, nonparametric clustering methods aim to be as agnostic as possible and infer the shape of clusters from the data and it is often used when no clear assumptions about the shape of clusters can be made.
+
+Another important characteristic of clustering algorithms is the choice of similarity metric.  Since a good clustering is achieved when members of one cluster similar to each other and distinct from members of other clusters, how observation similarity is defined is a key aspect of a clustering method.  A common approach to evaluating similarities among a collection of observations is distance, and there are many techniques that are applied, including: Euclidian distance, Manhattan distance, and edit based distance.  Distance based similarity approaches are most effective when it can be reasonably assumed that the variables in each observation are independent and identically distributed (iid).  However, in the case of time-series data, where adjacent observations are more likely to be correlated with those in close proximity, and the dimension is unidirectional the development of accurate distance metrics can be more challenging.  For these reasons, techniques that can captures temporal dependencies in an earlier abstraction step or more accurately assess similarity have been an active area of research for a long time.
+
+\section{Comparison of Techniques}
+Some important aspect to consider when choosing a clustering algorithm for a new task are the compatibility of the data types in the dataset, the nature of underlying distributions, and the similarity measure.  Also, the more intuitive the approach and the easier it is to describe the characteristics of cluster properties, the more likely it is to translate into practice.
+
+To identify the most appropriate clustering methods for the type of data that concerns this work, and described in more detail in X we assessed the potential of popular alternative clustering techniques that are well-represented in the literature, and several relatively unknown but promising approaches for our problem. We provide a summary of their benefits and limitations for clustering time series data in Table~\ref{clusteringAlgs}.
+
+
+%The most popular clustering technique is $k$-means.  It is simple, efficient and performs well on many tasks.  Using unlabeled training set examples, the algorithm uses an iterative method to partition a data set of $n$ values into $k$ clusters without being told their categories. It begins by randomly assigning $k$ points as the initial `seed' representatives or centroids. After the initial assignment of $k$ points, an iterative process of reassignment based on the `closest' centroid, is repeated until a convergence criterion is met (e.g., the squared error ceases to decrease or their is no reassignment of centroid location) or until a pre-specified number of iterations is reached.
+
+%The objective function of $k$-means is to minimize the total intra-cluster variance, and the common measure is the sum of the squared error:
+%$$V = \sum_{k=1}^K \sum_{X\in C_k}||X- \mu_{k}||^2$$
+
+%\noindent where $\mu_{k}$ is the center, or mean of cluster $C_k$, and where $||X- \mu_{k}||$ is the distance between a point in cluster $C_k$ and the cluster's centroid.  The default measure of distance is Euclidian distance, with ties broken arbitrarily.
+
+%Limitations of $k$-means include sensitivity to initialization, faltering when the data set is not naturally represented as spherically shaped clusters and the presence of outliers, which can substantially influence the location of centroid centers.\newline
+
+An important aspect to consider when choosing a clustering algorithm for a new task are the underlying distributions in the dataset.  If a common pattern relevant to the distribution of observations is known, then parametric assumptions about the shape of clusters can be exploited by an algorithms objective function to improve clustering performance.  If incorrect parametric assumptions are made, then resulting clustering assignments can be meaningless.  In the case when there is no evidence by which to assume parameters for the clustering model, nonparametric clustering is typically preferred.  Recent work has shown that these approaches are effective at clustering data without making what could be erroneous assumptions, and allow a data miner to be more agnostic about the shape of clusters.
+
+We will use two approaches to nonparametric clustering.  The first approach will use model parameters for each time series as input to spectral methods that are described in more detail in Section X.  Variants of spectral clustering often differ in the representation of the graph Laplacian, and we use an approach that  normalizes the graph, and has been shown to enhance the clustering so that the cluster-properties in the data, so that groups in the data can be easily detected by $k$-means in high-dimensional space~\cite{Ng01onspectral}.
+
+Our second clustering technique will use a two-level Bayesian hierarchy as described in Sectionwhere the base measure for a dataset is assumed to be a Dirichlet distribution.  Similarly to spectral clustering, hierarchical Bayesian methods do not impose strong structural assumptions about the shape of groups.  However, they are distinct in their approach to revealing clusters and offer some additional benefits in terms of interpretability.  For example, our medical dataset represents a population of patients at risk or with diabetes.  Therefore, the top level of the hierarchy provides information about the unknown heterogeneity that defines the variable dynamics within the population as a whole, and the first level provides information about unknown heterogeneity within individual groups.
+
+For clustering real-world time series datasets, a two-level hierarchical Bayesian model offers several advantages:
+
+\begin{enumerate}
+\item a large number of real-world datasets provide information about a population based phenomena for which some prior information about group variability is known,
+\item certainty about prior information is explicitly provided to the estimation procedure,
+\item it allows us to interpret results in terms of population based and group based heterogeneity, and
+\item when the size of the dataset is small, it is less prone to overfitting than other approaches.
+\end{enumerate}
+
+Model based Bayesian inference provides a framework for approximating priors.  In the case of model-based temporal abstraction, we estimate priors for the model parameters instead of the raw data.  Previous work has shown the appropriateness of this general approach for modeling natural language and the detection of biomarkers, and we will use similar inference techniques based on Gibbs sampling, a popular Markov Chain Monte Carlo algorithm.
+
+\input{5_1_sc}
+\input{5_2_bayes}
+\input{5_3_eval}

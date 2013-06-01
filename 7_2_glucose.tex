@@ -1,0 +1,61 @@
+\section{Application: Blood Glucose Maintenance}
+National estimates report a 8.3\% prevalence of diabetes in the Unites States, with over seven million undiagnosed~\cite{cdc}.  The disease can result in various health complications such as kidney failure and blindness.  However, medical research shows that behavioral changes and other interventions can prevent or delay diabetes onset showing how importance of early diagnosis and treatment.   \emph{Data mining and  machine learning methods applied to clinical data} have been the focus of a national challenge task, and various research research practice partnerships to predict diabetes risk, and diagnose diabetes over the last decade\cite{Kaggle, HHP}.
+
+The glucose data set is derived from administrative data encounter data that was generated during hospital admissions, and consists of physician ordered glucoses tests.  The clustering application seeks to identify high-level patterns in physicians orders for glucose tests that corresponds with patient sub-populations that they can be examined in more detail.  Although glucose test values would provide a finer-grained detail, the values are sensitive to the time of day that the test was administered, and both they type and time of food or drink ingested before testing.  Also, a higher-level utilization data is more common and accessible to insurance providers and can be generated from a patients claims profile.  Since untreated diabetes can result in more serious conditions, it is in the interest of insurance providers to shift resources towards preventative care.
+
+The glucose test data is for a population of patients admitted to NYPH Hospital with more than one physician ordered glucose test indicated in their EHR. Similar to the hepatitis patient data, the glucose time series presents methodological challenges in that it is irregularly sampled, and variable in length.  Additional complicating factors is an increased probability of record incompleteness and a self-selection sampling mechanism.
+
+In the 2010 the CDC reported that 11.5\% of hospitalizations in the US indicated diabetes as the primary diagnosis\footnote{http://www.cdc.gov/diabetes/statistics/hosp/adulttable1.htm}.  Due to the prevalence of diabetes, and its association with hospital admission, glucose tests are commonly ordered by physicians for hospitalized patients.  It is important to note that physicians' orders for a glucose test does not indicate diabetes, or prediabetes.  They are part of the metabolic panel that may be ordered to assess kidney and other organ health, or the patient may fit an at risk profile.  Therefore, glucose test with out any follow up on the succeeding day may corresponds with a short admission, or with a longer stay that does not require ongoing glucose monitoring. For this reason, it is not the indication of a single, sparse glucose testing that is informative, but rather a series of contiguous testing patterns over time.  For a hospitalized patient, this can suggests that their blood-glucose levels are being actively monitored by the attending physician, and either the patient is diabetic or prediabetic.
+
+\subsection{Data Description}
+For each patient, the sequence begins with the first physician ordered by test on record and indicates the presence `1' of a physician's order at $t_1$.  Each successive day, $t_2,t_3,...,t_T$, for a total $T$ days, a daily value indicating the presence or absence `0'  composes the patent's temporal measurement sequence.  At time $T$ measurement sequence is terminated by a censoring state (e.g. death) or on the day the record was extracted from the hospital information system.
+
+Figure~\ref{desc_glucose} shows descriptive statistics for the entire patient population in the glucose data set and including, record length, the entropy of the measurement sequence, total visits, the absence entropy, the fraction of visits, and the length of the longest gap in each patient's measurement sequence.
+
+\begin{figure}[ht]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=\columnwidth]{fig/histograms_descriptivestats_color_wmeans.jpeg}\\
+  \caption{Descriptive Statistics for Patients in the Glucose Data Set}\label{desc_glucose}
+\end{figure}
+
+\subsubsection{Selection Criteria}
+Although the methods can be applied to larger samples, and other types of samples, in order to compare results visually for assessment, I select patients with a time series length in the range of 1000 to 1025 days, consisting of just over 3 years of daily measurement data.  Figure~\ref{statsXlor} shows the sample in the context of the larger population for several of the aggregate measures that appear in Figure~\ref{desc_glucose}.  The length of record (lor) equal to 1000 is marked by the vertical red dash, and shows that about this lor length the longitudinal measurement patterns begin to exhibit more regular patterns in terms of the entropy of "1" values and of "0" measurement values.  Also, it shows that this population is not an outlier for the number of visits.
+
+\begin{figure}[ht]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=\columnwidth]{fig/statsXlor.jpeg}\\
+  \caption{Comparison of study sample with larger glucose data set}\label{desc_glucose}
+\end{figure}
+
+Both of these features suggest this is an appropriate lor to capture longer term chronic disease trends, and avoid some of the computational burden associated with using longer time series for the development of new temporal clustering methods.  Also, unlike alternative nonparametric clustering algorithms, Bayesian clustering does not assume a fixed $k$, and rather a  function of the size and complexity of the data. Therefore the need to extract a sample with enough power to represent all patient groups is less of a concern, and as new samples are drawn this method will estimate $k$ accordingly.
+
+In the collection of patients, our selection criteria resulted in a total of 1024 patient measurement sequences.  The descriptive statistics for the time series sequences for the patient population that meet the selection criteria are shown in Table~\ref{glucoseStats} and the values are visualized in Figure\ref{stats_1000_1025pts}.
+
+\begin{figure}[ht]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=\columnwidth]{fig/stats_1000_1025pts.jpeg}\\
+  \caption{Descriptive Statistics for the Glucose Study Sample}\label{stats_1000_1025pts}
+\end{figure}
+
+
+\subsubsection{Measurement Sequence Transformation}
+In contrast to the hepatitis data set, the glucose data set does not reflect raw data values, but a higher level signal with less information.  For discrete time modeling, time slices in the model are represented by the smallest temporal granularity, which in this case is one day.  For example, patient $i$, with $T=15$ and their first glucose test indicated on January 1 and subsequent measurements on the 5th-8th, and again on the 13-15th, would be represented by the measurement sequence $$x_i = [(t_1,1),(t_2,0),(t_3,0),(t_4,0),(t_5,1),(t_6,1),(t_7,1),(t_8,1),
+(t_9,0),(t_{10},0),(t_{11},0),(t_{12},0),(t_{13},0),(t_{14},1),(t_{15},1)]$$
+
+Continuous-time models allow for a more direct representation of the temporal phenomena, and do not require a fixed time interval that is the length of the smallest time granularity.    Not only does this allow for a new representation, it more explicitly captures informative features of a measurement sequences including, the contiguous measurements, their density, and frequency.
+
+In contrast to the discrete time model, this approach results in a measurement sequence that is equal to the number of each patients episodes in each patients record.  Since we need only to represent the data that is known, intervening time slices where no tests were observed are not required to be represented.
+
+First, we model each admission as a episode corresponding with a tuple, and instead of the 0/1 indication, the number of contiguous tests is used.  To learn the temporal model for each patient, the values are paired with the start time.  Below is the new representation for $x_i$, $x_i'$,
+$$x_i' = [(t_1,1),(t_5,4),(t_14,2)]$$
+
+Also, for discrete time Bayesian networks, when the parameters for a model must be learned, the forward-backward algorithm consists of $T-1$ iterations.   Although the continuous-time version of this algorithm required additional computational steps, when models are sparse, it is much more efficient and this has been noted as a key advantage of continuous-time modeling over discrete time approaches for this type of modeling task.
+
+Figure~\ref{sequence_reps} in the Appendix shows the the representation of the measurement sequence for discrete time modeling and continuous time modeling for two patients in our sample that were separated into two different clusters.  For the first sequence, what would consist of over one thousand iterations of a learning algorithm is reduced to two.  In the second case it is reduced to less than thirty iterations.
+
+\input{7_2_1_method}
+\input{7_2_2_results}
+\input{7_2_3_discussion}

@@ -1,0 +1,34 @@
+\section{Contributions}
+
+The central contribution of this thesis is to introduce a new probabilistic learning method for the exploratory analysis of non-canonical time series data.  Although, clinically significant work applying exploratory techniques to clinical data has been demonstrated~\cite{Marlin12,Saria09}, it has focused on monitoring patients in the critical care setting, where data is sampled at a high frequency and the clinical concerns are more immediate.  In contrast, chronic disease progression can take months or years to manifest, and longer-term trends can have increased importance.
+
+%In contrast, modeling the evolution of a patient's chronic disease trajectory may require data that has been sampled for a duration of months or years, and the assumption that data is missing at random is less likely to be true.
+
+%Using electronic medical data as a case study, I develop a method for modeling patient and population chronic disease dynamics that can be used to model data the reflects variable durations, that is subject to a variety of sampling schemes.  Specifically, I extend the framework of semiparametric temporal clustering~\cite{Jebara} to continuous-time abstraction and nonparametric Bayesian clustering.
+
+%I evaluate the performance of this approach on two clinical data sets.  Using lab test data for hepatitis C patients and aiming to cluster patients by liver fibrosis stage, my method shows over a 20\% relative improvement over benchmark performance.  The second data set contains encounter data, indicating physician ordered glucose test for hospitalized patients.  Although there is no gold standard for comparison, my method can detect recognizable differences among discovered groups that can be visualized, and produces good clusters based on intrinsic quality metrics.
+
+
+%Specifically, I present \emph{new extensions to the semi-parametric framework}.Using electronic medical data related to chronic conditions as a case study, I focus developing a new method for clustering patient-level electronic health record (EHR) data that is collected for variable durations, and sampling schemes.  There is an existing body of work modeling temporal patient data in the critical care environment, where a high sampling frequency signal is provided by physiological measurements~\cite{Russel08,Saria10,Marlin12}.   Although these methods are innovative and have shown benefits for clinical care, the techniques do not easily translate to electronic health record (EHR) data that is subject to longer durations, such as months or years, and the noise and incompleteness associated with secondary data sources.
+
+% When used as data sets for research, secondary data sources, such as electronic health record data, transaction data bases, social media and others, pose methodological challenges.  That is, they may provide a signal, but one that is muddled with noise, and they may be incomplete, forcing traditional methods to make assumptions about missing data values that may not be true.
+
+
+
+
+%Patient level observational data that is collected over time is commonly referred to as panel data in econometrics and statistics, and longitudinal data in biostatistics.  The main distinction of my application from what is typically the subject of study in these fields is the secondary nature of the data set, and the size.  The traditional methods for longitudinal analysis of patients are designed to model far fewer time points, require uniform length sequences, and data is collected for the purpose of the study.
+
+More specifically, the contributions of this thesis are:
+\begin{itemize}
+  \item I introduce a temporal clustering method designed to utilize the temporal data that serves a secondary purpose as a research instrument.
+  \item I describe how continuous-time model based abstraction can be used to provide a principled approach to regularizing time series that are variable in length, subject to arbitrary sampling schemes, and reflect irregular intervals.
+  \item I develop a continuous-time abstraction method for clinical data that more directly models observations, and incorporates theoretical aspects of multi-state Markov models that are used in biostatistics for survival analysis.
+  \item I extend the semiparametric framework to the nonparametric Bayesian setting.  This no longer requires that $k$ is fixed, or a required parameter for clustering.
+  \item I demonstrate that my clustering approach can produce meaningful clusters from noisy, incomplete patient data and evaluate results on intrinsic and extrinsic validation methods.
+  \item I discuss the clinical significance of clustering results, and what findings have a potential translation to practice.
+  \item I show that my clustering approach improves on state-of-the-art performance by comparison with a benchmark system on gold-standard results.
+  \item I compare the performance of nonparametric Bayesian clustering with spectral methods for clustering patient models.
+  \item I facilitate the interpretation of model-based clustering results by normalizing cluster-level characteristics and visually compare group signatures in terms of ``instantaneous risk''.
+\end{itemize}
+
+

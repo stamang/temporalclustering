@@ -1,0 +1,87 @@
+\input{7_1_1_method_data}
+
+\subsection{Abstraction}
+\subsubsection{CTBN Model Structure}
+A CTBN was used to abstract temporal information and is shown in Figure~\ref{msmgraph}.  The lab results for each patient over time were mapped to corresponding \emph{low}(L), \emph{normal}(N) and \emph{high}(H) values based on thresholds identified by clinical experts, and used as states in the model.  Table~\ref{hepxtab} shows the probability of each transition type based on the frequencies all patient transitions for platelet test values.  For example, based on reported transitions, patients reporting a high platelet count show the following probabilities for their next next observation period: high 92\%, normal 83\% and low is less than 1\%.
+\emph{can we provide that averages for all patients here?}
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+
+  \node[main node] (1) {L};
+  \node[main node] (2) [below left of=1] {N};
+  \node[main node] (4) [below right of=1] {H};
+
+  \path
+    (1) edge node [left] {$q_{L,H}$} (4)
+        edge [bend right] node[left] {$q_{L,N}$} (2)
+    (2) edge node [right] {$q_{N,L}$} (1)
+    	edge [bend right] node[below] {$q_{N,H}$} (4)
+    (4) edge node [above] {$q_{H,N}$} (2)
+        edge [bend right] node[right] {$q_{H,L}$} (1);
+\end{tikzpicture}
+\end{center}
+\caption{3-state MSM}
+\label{msmgraph}
+\end{figure}
+
+\begin{table}[ht]
+\caption{Input for model abstraction step}
+\label{hepxtab}
+\vskip 0.15in
+\begin{center}
+\begin{tabular}{ l | c | c |c}
+ $q_{i,j}$      & H & N & L  \\
+\hline
+H  & 0.915 & 0.083 & 0.001  \\\hline
+N  & 0.035 &0.961 &0.004 \\\hline
+L   & 0.025 &0.224 &0.751  \\
+\end{tabular}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+\subsubsection{Model Variables}
+Based on an initial run using six lab tests that were selected due to known associations with liver decline, three, the PLT, ALB, and ZZT tests, resulted in good cluster assignments, with PLT performing the best based on the b-cubed metric~\cite{Bagga}, which is discussed in more detail in Section X, and is the harmonic mean of the average pointwise precision and recall for the cluster assignments compared with a gold standard.
+
+To compare our results with previously published results I cluster patients based on PLT data alone, and in the multivariate lab test data.  To select additional indicators that are most useful, we generated preliminary clustering results using the five indicators that had been reported to have predictive qualities by unsupervised or supervised learning methods.  Using the variables that produced comparable results with that of PLT only, we calculated the mutual information between clusters assignments, and excluded ChE and D-BIL on this basis.  For multivariate temporal clustering of temporal ALB and PLT  data imporved results were achieved compared with results based on PLT alone, and ZZT made a minor improvement upon the results of ALB-PLT based clustering.
+
+\subsubsection{Learning}
+Multiple variables are combined for clustering, but the temporal data for each is abstracted separately.  Although the language of CTBNs allows for covariances, they must appear be observed concurrently, and there are numerous time days where the data does not appear for all three.  For example, a patient may have been given both a blood and urine test during a visit, or only one of these at a particular time.
+
+%in the results discuss the strength and limaitaions of this apprach
+
+The continuous time extension to the Baum Welsh algorithm, used the Kolmorgorox equations, which map the transition matrix of a discrete time model to CTBNs. Initial values for the each patients intensity matrix were obtained by using a naive estimation provided by counting the total number of transition pairs for the entire population, and estimating their probability of occurrence. Although not all patients were able to have model parameters output by the abstraction method, initial population level estimates allowed more observations to converge using the parameter estimation methods than the same naive initialization assumption at the patient level.
+
+Using a 4-state multi-state Markov model, each patient's parameters are calculated using likelihood estimations based on the time and values in their observation sequences.  The parameter, or abstraction, used as input to clustering is the matrix $Q$, representing the instantaneous behavior of the process $X$, as an $n$x$n$ matrix.
+The model is initialized using To learn the priors for each patients model, using BFGS.
+
+
+
+
+\begin{table}[ht]
+\caption{Input for model abstraction step}
+\label{hepinput}
+\vskip 0.3in
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+data& state	& PLT	\\
+\hline
+19811111& 2&177 \\
+19830720&2&182 \\
+19830818&2&167 \\
+\hline
+\end{tabular}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+
+
+\subsubsection{Inference}
+\subsubsection{Model Comparison}
+\subsection{Clustering}
+

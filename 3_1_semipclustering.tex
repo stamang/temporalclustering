@@ -1,0 +1,20 @@
+\section{Semi-parametric Clustering}
+In the semi-parametric clustering framework for temporal mining, Markovian models provide useful parametric assumptions for modeling
+temporal dynamics, and a non-parametric method is used to cluster the temporal abstractions instead of operating on the original data.  This section distinguishes between parametric and non-parametric modeling, and discusses the benefits of each for temporal data analysis.
+
+\subsection{Parametric versus Non-parametric}
+The terms parametric and non-parametric is a binary that is used to describe two diverging approaches to modeling data.  We define them from the perspective of probabilistic inference models in the form $p(x)$ or $p(y|x)$, where $x$ is a set of inputs, $y$ is a set of outputs, and $N$ the number of observations contained in a dataset $D=\{(x_i,y_i)\}_{i=1}^{N}$.
+
+For this problem, the key distinction is the number of parameters required to characterize a model.   In the case where the number of parameters for a model is fixed, for all $N$, the model is \emph{parametric}.  If the number of parameters for the model is a function of $N$ it is a non-parametric modeling method.
+
+There is no rule that states either approach is definitively better.  It is also not the case that algorithms need to be catholic about the choice of one or the other, and a learning task can involve both parametric and non-parametric components.     In practice, the nature of the data, and the analytic end-points that are to be achieved are good ways to guide the choice of methods.  If there is expert knowledge or experimental evidence that suggests a parametric model should be imposed on the data, it is likely beneficial and can be used to increase efficiency.  Since non-parametric models are more agnostic to distributions in the data, they are good choices when underlying structure are not obvious to the researcher, or model flexibility is desired.  However, they explore a larger state space and analysis can be intractable or prohibitively expensive.
+
+In the semi-parametric clustering framework for temporal mining, Markovian models provide useful parametric assumptions for modeling
+temporal dynamics, and a non-parametric method is used to cluster the temporal abstractions instead of operating on the original data.  This section distinguishes between parametric and non-parametric modeling, and discusses the benefits of each for temporal data analysis.
+\subsection{Clustering Temporal Models}
+The goal of clustering algorithms is to divide $n$ observations $x_{i}, . . . , x_{n}$, so that each observation $x$ is grouped into one of $k$ disjoint clusters, such that each $x_{i}$ is assigned membership in one group, where points in the same group are similar and points in different groups are dissimilar to each other.
+
+Parametric assumptions for clustering has clear benefits in terms of efficiency and performance when the assumption, e.g. clusters are Gaussian, or $k$ is fixed regardless of sample size, is true.  In contrast, non-parametric clustering methods aim to be as agnostic as possible and infer the shape of clusters or allow the $k$ to be expressed as a function of the sample size.
+
+Due to the high performance, spectral methods is the most prevalent non-parametric clustering step used in the semi-parametric clustering framework.  They offer non-parametric qualities for clustering and have been used in many fields to address the limitations posed by centroid-based definitions of a cluster.  However, one major limitation of this methods is the assumption that $k$ is fixed, require that it be defined a priori.
+

@@ -1,0 +1,17 @@
+\chapter{Conclusions}
+\label{ch:conclusions}
+
+Although there is extensive work on approaches for modeling patients in environments such as the ICU, these do not easily translate to long durations, such as months or years.  To this end, we demonstrate a clustering method for the exploratory analysis of longitudinal patient data that easily extends to new data sets, and in contrast to discrete time approaches, is more appropriate for modeling incomplete, irregular observation sequences that are common to patient data found in electronic health records.
+
+We demonstrate a new method to model patient disease dynamics with two key features.  First, we use continuous-time (CT) HMM abstraction, which avoids some of the limitations of discrete-time approaches when a dynamic process evolves at different time granulations, and when observations are irregularly sampled and missing not at random.  Second, non-parametric Bayesian clustering methods avoid the problem of identifying the number of clusters a priori, inferring the appropriate number of mixture component as a function of the sample size.
+
+Specifically, we apply hidden multi-State models, an instance of continuous-time HMM models used by biostatistican for disease modeling.  Although we were unable to match the intrinsic clustering quality achieved in previous work using discrete-time HMMs abstraction with glucose test data, performance was comparable.  However, on a hepatitis data we externally validate their effectiveness.  We also assess the performance of pairing temporal abstraction with a non-parametric Bayesian clustering.  It conveniently eliminates the need to estimate $k$, and  performed better that spectral clustering on the hepatitis data set.
+
+\section{Future Work}
+
+ Our continued work will focus on more rigorous, and alternative methods for cluster evaluation. Silhouette values are limited in their ability to assess quality and there may be more suitable, or additional methods to evaluate clusters.  Also, in terms of external validation for our hepatitis data set, our clusters are not categorical, but rather ordinal and accounting for the relations between clusters may also provide additional insights into the performance our techniques.
+
+%The accumulation of data has outpaced the development and adoption of tools that can process and analyze data artifacts to present more succinct and informative summaries of interest to end-users.  However, temporal data can provide critical contextual information to discover new knowledge relevant to health and wellness.  However, the accumulation of patient data has outpaced the generation of effective methods for temporal analysis.
+
+
+

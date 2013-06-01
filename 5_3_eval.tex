@@ -1,0 +1,71 @@
+\section{Evaluating Cluster Quality}
+\label{sec:clusterEval}
+Evaluating the results of clustering is a challenging task.  Although there has been exciting theoretical work in clustering, and many application demonstrate meaningful results, there is an need to establish a better and deeper science than is currently offered to address the issues that are independent of specific clustering methods~\cite{Pelillo,Guyon,Blum}.
+
+For the purpose of evaluating clustering algorithms, we assess \emph{intrinsic} and \emph{extrinsic} cluster quality.  Metrics used in practice enable these judgements to be made in terms of abstract properties that exist independently of the data set.  However, these metrics make assumptions about conceptual questions such as ``what is a \emph{optimal} clustering'', which may require domain knowledge.  Also, research shows that humans employ multiple strategies for finding the number of clusters, $k$, and even on simple data sets the number of possible interpretations can be high~\cite{Lewis09}.
+
+Despite their short-comings, validation metrics are useful for developing systems and evaluating clustering results, and researchers continue use and improve them.  A cluster can be informally described as a maximally coherent subset, $C$, that satisfies both inter and intra-cluster criterion:
+\begin{itemize}
+  \item items in $C$ should be homogeneous in type
+  \item no larger cluster should contain $C$ as a proper subset
+\end{itemize}
+\noindent These generic qualities of an optimal clustering are generally agreed upon, and serve as the basis for developing metrics, such as purity, B-cubed, V-measure and others.
+
+For simple data sets, evaluation is more straight-forward.  However, for more complex tasks some challenges that are in direct conflict with evaluating clustering results based on established metrics alone are:
+\begin{itemize}
+  \item for the same set of observations, an optimal clustering cannot be established
+  \item the relative importance of clusters may be unequal and dependent on problem context; i.e. maximal coherency may be more important for certain clusters, and
+  \item categorical similarity can be non-metric.
+\end{itemize}
+
+\subsection{Intrinsic Validation}
+When a gold standard is unavailable to evaluate clustering performance, heuristics can be used to assess the \emph{intrinsic quality} of clusters.  
+
+\subsubsection{Silhouettes}
+One common heuristic that helps to quantify the intrinsic goodness and visualize cluster differences is the silhouette method~\cite{Rousseeuw}.  For a clustering assignment, the data set's silhouette is defined by the difference of the average dissimilarity of a point to members or its own cluster with that of the `neighboring' cluster over the max of these two dissimilarity measures.
+
+For example, the silhouette validation technique can be used to validate patient clusters when human judgement is not available. For each patient, let $a(i)$ be the average dissimilarity of patient $i$ to all patients in its respective cluster.  We then calculate the average dissimilarity of patient $i$ with patients of another cluster, repeating for all clusters that patient $i$ is not a member of.  The cluster with the lowest average dissimilarity is the ``neighboring cluster'' of patient $i$ and indicated by $b(i)$. The resulting silhouette value is defined as:
+$$s(i) = \frac{(b(i)-a(i))}{\mbox{max }{(a(i),b(i))}}$$
+and the average $s(i)$ of a clustering assignment is a measure of how tightly patients are grouped into their respective clusters and how distinct clusters are with respect to each other.
+
+When $s(i) \geq .6$, patient $i$ can be considered to be appropriately clustered.  A value close to -1 indicates that a patient would have been more appropriately assigned to the neighboring cluster, $b(i)$, and a value close to 1 indicates that individuals in the patient's respective cluster are very similar and that the cluster is distinct from other clusters.
+
+\subsection{Extrinsic Validation}
+ A clustering assignment that demonstrates high intrinsic quality may not always translate to high \emph{extrinsic quality}.  When available, comparison with a gold-standard is preferable.
+
+Amigo et al.~\cite{Amigo} define formal constraints extrinsic metrics should satisfy based on the generic properties of, homogeneity, completeness, and cluster size vs. quantity.  A fourth, coined the `rag bag', places preference on a clustering that places `miscellaneous' items together, forming a set containing a `diverse genre'.  Although this constraint is not grounded in the generic qualities of a optimal clustering, it appears to facilitate the interpretation of clustering results, and has been demonstrated as a beneficial property in the researcher's human subjects study, which is used to validate the proposed constraints.
+
+Using flow cytometry data, Aghaeepour et al. ~\cite{Aghaeepour} provide an empirical study of cluster evaluation metrics.  Their work indicates a correlation between the main types of metrics, and compares the seven different metrics to provide indications for the best metrics for clustering solutions against ground truth partitions.
+
+\subsubsection{F-measure and B-cubed}
+ B-cubed~\cite{Bagga} is a common measure for extrinsic evaluation that extends the F-measure to clustering ad decomposes precision and recall to each item.  This metric satisfies all of the constraints formalized by Amigo et. al and validated by human assessment~\cite{Amigo}, and F-measure alone reported the lowest overall error for all samples in the empirical study by Aghaeepour et al. ~\cite{Aghaeepour}.
+ 
+The recall and precision for class $i$ in cluster $j$ can be expressed as:
+$$R(c_{i},k_{j})=\frac{n_{ij}}{|c_{i}|}$$
+$$P(c_{i},k_{j})=\frac{n_{ij}}{|k_{i}|}$$
+\noindent where ${|c_{i}|}$ and ${|k_{j}|}$ represent the number of points in class $i$ and in cluster $j$ respectively.
+
+Thus, B-cubed is defined as an \emph{element level precision and recall} as follows:
+$$P=\frac{\sum{i}P(e)}{n}$$
+$$R=\frac{\sum{i}R(e)}{n}$$
+
+\subsubsection{Entropy-based Metrics}
+The V-measure~\cite{Rosenberg} is a conditional entropy-based measure that addresses some of the limitations of other entropy-based metrics.  It satisfies all but the `rag bag' constraint discussed by Amigo et al.~\cite{Amigo}, and is the best performing entropy-based cluster evaluation metric reported in the empirical study by Aghaeepour et al. ~\cite{Aghaeepour}.  The metric explicitly measures how well a clustering application has achieved the qualities of homogeneity and completeness, by taking the harmonic mean of these scores, and like the F-measure can also be weighted.  
+
+For a set of $N$ observations, a set of $n$ classes, $C=\{c_i|=1,...,n\}$ and $m$ clusters, $K=\{k_i|=1,...,m\}$, let $A$ be a contingency table with entries for all where $a_{ij}$ is the number of data points in both class $c_i$ and cluster $k_j$.  The homogeneity criteria is maximized when each cluster contains members of only one class is calculated by
+$$h = 1-\frac{H(C|K)}{H(C)}$$
+\noindent where $H(C|K)$ is the conditional entropy
+$$H(C|K)=-\sum_{k=1}^m \sum_{c=1}^n \frac{a_{ck}}{N}\text{log} \frac{a_{ck}}{\sum_{c=1}^n {a_{ck}}}$$
+\noindent and the class entropy $H(C)$ is given by
+$$H(C)=-\sum_{c=1}^n \frac{a_c}{N}\text{log} \frac{a_c}{N}$$
+\noindent Completeness is calculated by examining the distribution of the cluster assignments in each class
+$$c = 1-\frac{H(K|C)}{H(K)}$$
+\noindent with $H(K|C)$ and $H(K)$ in a symmetric manor.
+
+The V-measure takes the harmonic mean of the homogeneity and completeness, and similar to the F-measure can be weighted to favor one criteria:
+$$V_\beta = \frac{(1+\beta)*h*c}{(\beta*h)+c}$$ 
+
+\subsection{Importance of Problem Context}
+Clustering encompasses a wide range of problem types, many of which can be expressed in a taxonomy to help clarify design decisions and evaluation of the results~\cite{Guyon,Blum}.  However, for evaluating the goodness of clusters, existing metrics are calculated independent from problem context and have generally been developed to evaluate solutions for techniques that recast clustering as a partitioning problem, where the number of clusters are known $a priori$.
+
+In contrast, human interpretation of clustering assignments takes into account the nature of the relations between how data representation and the clustering goals.  For this reason, it's treatment as an application-independent mathematical problem with associated metrics is limiting.  Therefore, in addition to validation metrics, interpreting clustering results in the context of problem semantics is also an important part of determine if a clustering application has produced meaningful results.

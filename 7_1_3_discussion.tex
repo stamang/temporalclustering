@@ -1,0 +1,134 @@
+\subsection{Discussion}
+In addition to evaluation of semiparametric Bayesian clustering with a gold standard, the experiments with the hepatitis data set are designed to compare the approach with an alternative spectral clustering step and previous temporal clustering results reported in the literature.  Here, I discuss the key findings based on external metrics and their clinical significance.  Also, I show a visualization technique to aid the interpretation of clustering results that is based on average model parameters for each discovered cluster, or patient group.
+
+\subsubsection{Spectral Clustering Versus Nonparametric Bayesian Clustering}
+
+ By comparing alternative clustering steps for the semiparametric framework, these results indicate a benefit to \emph{Drichlet process Gaussian mixture modeling}, an nonparametric Bayesian clustering, instead of spectral method.  Due to popularity of spectral methods, and reputation for high performance, my expectation was comparable performance.  I suspected the key benefit would be a relaxation of the requirement to indicate $k$ $a$ $priori$ and not a notable improvement in overall performance.
+
+ One explanation for the improved performance is the distribution of the class labels, which is Gaussian.  Spectral methods methods attempt to balance the size of the clusters while minimizing the interaction between dissimilar points, and can bias results towards clusters of equal size~\ref{WhiteS05}.  Many diseases, and disease-related states show Gaussian population distributions, and our results suggest that spectral clustering may not be the best choice for modeling patient populations.
+
+\subsubsection{Comparison with State-of-the-Art Methods}
+To compare the results of semiparametric Bayesian clustering with previous work, I reconstructed a univariate and multivariate experiments and compared them with published results~\cite{Hirano05,Hirano07a,Hirano07b,Tsumoto12}.  I show that it out performs alternative methods for range of scenarios, including univariate and multivariate analysis, and different hepatitis disease types.
+
+Using the best temporal indicator, PLT, results for univariate temporal clustering were small (42\%~\cite{Hirano05} to 45\%).  However it is important to note that in comparison experiment, small clusters where $N$<$3$ were not provided in the membership table.  How generous the score calculated from their cluster constitution table is unclear.
+
+For multivariate temporal data, clustering performance increases over a 20\% relative improvement using combined ALB-PLT-ZTT tab results, reporting a 51\% b-cube score.  Cluster constitutions reported in the literature based on trajectory mining, reported scores between 41-42\% and were based on the temporal modeling of features from combined ALB-PLT~\cite{Hirano07a,Hirano07b} and ALP-PLT-ChE lab data~\cite{Tsumoto12}.
+
+Again, some of the comparison estimates are generous.  The clusters where $N$ < $2$ for the temporal ALP-PLT data results were not provided in the membership table, or could be determined by another reported statistic.  Inclusion of even one of the missing clusters would have reduced the completeness constraint, and lowered the value of the validation metric.
+
+\subsubsection{Clinical Context and Relevance}
+The goal of temporal mining task was to discover patient groups that are useful or meaningful to:
+ \begin{itemize}
+   \item discriminate between those that progress to more advances stages such as cirrhosis or hepatocarcinoma, and
+   \item determine if less invasive diagnostic procedures can replace liver biopsy.
+ \end{itemize}
+
+In addition to cluster membership, semiparametric Bayesian clustering provides us with additional information for learning group level properties from members' trajectories.  The subpopulation characteristics can be used to assign a unseen patient to one of the discovered clusters.   More specifically, each patient's model parameters characterizes their rate of change from of the disease states to all others.  In Figure\cite{fig:hepq} we show averages for each cluster's characteristic model, based on a three state (low,normal,high) $k=4$ PLT based clustering results.
+
+%1       1  0   4.649329  -9.866057 -41.078529  0 -18.21271 -9.058329 11.266929
+%2       2  0  -4.832645 -19.860027  -6.281500  0 -16.76764 -8.736268 -1.768516
+%3       3  0 -34.752063 -23.149088   5.142881  0 -14.15912  1.595881 -5.364187
+%4       4  0  15.124626   8.949241 -59.671174  0 -27.21240 -8.355130 17.715889
+
+
+\begin{figure}
+\[Q_1= \left( \begin{array}{ccc}
+0 & 4.65 & -9.87 \\
+-41.08 & 0 & -18.21 \\
+-9.06 & 11.27 & 0
+\end{array} \right)
+%
+Q_2= \left( \begin{array}{ccc}
+0 & -4.83 & -19.86 \\
+-6.28 & 0 & -16.77 \\
+-8.74 & -1.76 & 0
+\end{array} \right)
+\]
+\[ Q_3= \left( \begin{array}{ccc}
+0 & -34.75 & -23.15 \\
+5.14 & 0 & -14.16 \\
+1.60 & -5.36 & 0
+\end{array} \right)
+%
+Q_4= \left( \begin{array}{ccc}
+0 & 15.12& 8.95 \\
+-59.67 & 0 & -27.21 \\
+-8.36 & 17.72 & 0
+\end{array} \right)
+\]
+\caption{Intensity Matrices for 3-state, 4 cluster hepatitis model}
+\label{fig:hepq}
+\end{figure}
+
+The cluster composition is shown by fibrosis stage, the gold standard class used for external validation, appears in Table\ref{hepassignments}.  Fibrosis stages are labeled F0 through F4, with F4 indicating end-stage liver disease.
+
+
+\begin{table}[ht]
+\caption{Cluster composition by fibrosis stage}
+\label{hepassignments}
+\vskip 0.15in
+\begin{center}
+\begin{tabular}{lcccr}
+\hline
+\hline
+	& $F0,F1$ &$F2$	& $F3$	& $F4$ \\
+\hline
+\hline
+$k_1$ & 5& 2& - & - \\
+$k_2$ & 17& 11& 6& 10 \\
+$k_3$ & 6& 1& 3& 6\\
+$k_4$ & 25& 1& -& 1\\
+		
+\hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsubsection{Risk of End-stage Liver Disease}
+\label{risk}
+To \emph{stratify discovered groups by risk types}, I examine the proportion of class labels within each.  Figure~\ref{hep_2} shows the cluster composition as a percent of total records for each class.  The size of each circle is proportional to the total count for each Matavir score, or class label. Also, it shows the biopsy activity, HAI, with the darkest color indicating the highest activity, and which some consider a better indicator for liver fibrosis than the Matavir score.
+
+\begin{figure}[t]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/hep_2.jpg}}
+\caption{Metavir biopsy grade and Hepatitis Activity Index (HAI) by cluster as a percent of total records for each class}
+\label{hep_2}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+Based on Figure~\ref{hep_2}, we can broadly rank clusters by increased risk for progressing to end-stage liver disease: $c_4 < c_1 < c_2 < c_3$.  In in $c_1$, the presence of the largest circle at the lowest grade, F0, and a steady decrease in size as biopsy grades increase, indicates the highest composition of patients at low risk.  Consistent with this conclusion, relative to other clusters, $c_1$ patients have a lower activity with only a small fraction showing high biopsy activity.  Similar to $c_1$, $c_4$ also shows the presence of patients with lower biopsy grades, and low activity.  However, it does not show the a larger proportion of these patients at lower biopsy grades, as in $c_1$, suggesting that members of $c_4$ progress to end-stage liver disease more often that those patients in $c_1$, but based on cluster composition, less often that patients in $c_2$, or $c_3$.  Patients in $c_2$ are the most likely to progress to higher fibrosis stages, showing the highest proportion of patients with F3 and F4 scores, that decrease as the fibrosis grade gets lower.  A similar trend is observed in $c_3$ but is not as dramatic.
+
+\begin{figure}[ht!]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{fig/hepc_qmatrix.jpeg}}
+\caption{Comparison of semiparametric clustering with a reported benchmark}
+\label{hepCqmatrix}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\subsubsection{Hepatitis Disease Trajectory}
+  The irregular sampling of disease related indicators, and the long progression times are obstacles to providing more detailed mechanism for chnonic diseases trajectory that are not well understood, such as hepatitis.  One benefit of model-based temporal abstraction with Bayesian network is that unlike feature-based methods that aim to characterize salient properties of the observed signal, they provide a direct representation of the underling process or phenomena they model.
+
+  For non-canonical time series data, continuous-time Bayesian networks (CTBNs) can provide parameters for patient and population level models that can be used to provide insight into chronic disease progression, specifically, the instantaneous rate of change between of this disease states.  The added benefit of clustering is the division of a patient sample into subpopulations that can correspond with meaningful groups such as risk types, providing the ability to examine hepatitis trajectories at a finer-level of detail that is useful for characterizing patients.
+
+  Figure\cite{fig:hepq} shows a characteristic intensity matrix for each of the clusters. To facilitate their interpretation, and compare clusters in terms of instantaneous risk factors, Figure~\ref{hepCqmatrix} visualizes the each of the intensity matrices.  Each cluster is represented by a color along the $y$-axis, and the $x$-axis represents the the number of standard deviations each cluster's dataum is relative the mean for all of the $q_{ij}$.  Each of the nine plots in the 3x3 grid that correspond with the entries of the $Q$ matrix, and represent the transitions from low, normal and high disease states.
+
+Based on our assessment of risk types in Section~\ref{risk} that broadly qualified the clusters by increased risk of end-stage liver disease as $c_4 < c_1 < c_2 < c_3$, we can describe properties of patient sub-populations in terms of instantaneous risk, and relative to each other.  For example, if a patient is currently in a normal state, how likely are they to progress to lower (unhealthy) state?  Figure\cite{fig:hepq} shows us the model parameters for each cluster, and indicated the precise value of the instantaneous risk.
+
+To compare sub-populations relative to each other, the $q_norm,low$ entry in Figure~\ref{hepCqmatrix} shows us that patients in $c_1$ and $c_4$, which correspond with those at less risk of fibrosis, are more likely to remain in the normal state, and patients in  $c_1$ and $c_4$, the patient groups with the highest fibrosis risk, are more likely to transition to poorer health based on the population average. Also, it shows that $c_4$ represents patients are mostly likely to remain in a normal state and $c_3$ patients are the most likely to transition to a poorer health states.  Notably, this interpretation is consistent with our designation for risk types, and their rank from lowest to highest risk, and can be made for other key model transitions.
+
+\subsubsection{Actionable Findings}
+One important finding that is not adequately captured by standard evaluation metrics that is relevant to our problem is related to the increased importance of lowest fibrosis class, composed of patients labeled F0 or F1 in the gold standard.  Specifically, liver biopsy is an invasive procedure that can put patients at risk of procedural complications, and costs hundreds of dollars.  The ability to reduce the number of unnecessary biopsies is currently an active area of research.
+
+The lowest risk cluster generated by our procedure consistently produced one cluster of high purity for F0 and F1 patients.  Although this cluster was not maximal for this population, it can be used to identify patients for which biopsy is likely unnecessary.  For example, 93\% of patients in $k_4$  (see Table\ref{hepassignments}) had unnecessary biopsies, and represent about a quarter of the patient sample.
+
+
+
+
+
+%cluster assignments appear in the NYU slides 
